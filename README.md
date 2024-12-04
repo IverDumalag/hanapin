@@ -1,10 +1,10 @@
 # HanaPIN: A Pet Finding Forum
 
 A project for Information Assurance and Security
-
-Developers:
-Dumalag, Iver Marl
-Garcia, Alyssa Umiko
-Ross, Angel Aisha
+<br/>
+Developers:<br/>
+Dumalag, Iver Marl<br/>
+Garcia, Alyssa Umiko<br/>
+Ross, Angel Aisha<br/>
 
 
