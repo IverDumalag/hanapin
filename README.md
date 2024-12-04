@@ -4,7 +4,6 @@ A project for Information Assurance and Security in National University - Dasmar
 <br/>
 Packages Installed
 <li>aa</li>
-<ul>aa</ul>
 <br/>
 Developers:<br/>
 Dumalag, Iver Marl<br/>
