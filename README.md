@@ -6,7 +6,7 @@ Packages Installed
 <li>npm install @react-oauth/google@latest</li>
 <li>npm install jwt-decode</li>
 <li>npm install react-router-dom</li>
-<li>npm install react-cookiel</li>
+<li>npm install react-cookie</li>
 <br/>
 Developers:<br/>
 Dumalag, Iver Marl<br/>
