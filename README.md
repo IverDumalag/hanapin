@@ -7,6 +7,7 @@ Packages Installed
 <li>npm install jwt-decode</li>
 <li>npm install react-router-dom</li>
 <li>npm install react-cookie</li>
+<li>npm install dotenv</li>
 <br/>
 Developers:<br/>
 Dumalag, Iver Marl<br/>
