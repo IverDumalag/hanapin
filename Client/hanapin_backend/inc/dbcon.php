@@ -15,4 +15,15 @@ try {
     die("Connection failed: " . $e->getMessage());
 }
 
+// errors
+function error422($message) {
+    $data = [
+        'status' => 422,
+        'message' => $message,
+    ];
+    header("HTTP/1.1 422 Unprocessable Entity");
+    echo json_encode($data);
+    exit;
+ }
+
 ?>
