@@ -10,6 +10,7 @@ Packages Installed
 <li>npm install dotenv</li>
 <li>npm install @mui/material @emotion/react @emotion/styled</li>
 <li>npm install @fontsource/roboto</li>
+<li>npm install @mui/icons-material</li>
 <br/>
 Developers:<br/>
 Dumalag, Iver Marl<br/>
