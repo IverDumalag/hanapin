@@ -9,7 +9,13 @@ require ('../inc/dbcon.php');
 function registerUser($userInput) {
    global $conn;
 
-   $user_id = $userInput['user_id'];
+   // Generate user ID
+   $stmt = $conn->prepare("SELECT COUNT(*) as count FROM tbl_accounts");
+   $stmt->execute();
+   $result = $stmt->fetch(PDO::FETCH_ASSOC);
+   $count = $result['count'] + 1;
+   $user_id = 'US-' . str_pad($count, 7, '0', STR_PAD_LEFT);
+
    $first_name = $userInput['first_name'];
    $middle_name = $userInput['middle_name'];
    $last_name = $userInput['last_name'];
@@ -27,12 +33,10 @@ function registerUser($userInput) {
    $city_municipality = $userInput['city_municipality'];
    $province = $userInput['province'];
    $postal_code = $userInput['postal_code'];
-   $created_at = $userInput['created_at'];
-   $updated_at = $userInput['updated_at'];
+   $created_at = date('Y-m-d H:i:s');
+   $updated_at = date('Y-m-d H:i:s');
 
-   if (empty(trim($user_id))) {
-      return error422('Enter User ID');
-   } else if (empty(trim($first_name))) {
+   if (empty(trim($first_name))) {
       return error422('Enter First Name');
    } else if (empty(trim($last_name))) {
       return error422('Enter Last Name');
@@ -61,7 +65,6 @@ function registerUser($userInput) {
    } else if (empty(trim($postal_code))) {
       return error422('Enter Postal Code');
    } else {
-      // Hash the password before storing it
       $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
       $query = "INSERT INTO tbl_accounts (user_id, first_name, middle_name, last_name, extension, email, profile_pic, password, role, date_of_birth, sex, house_number, street, subdivision, barangay, city_municipality, province, postal_code, created_at, updated_at) VALUES (:user_id, :first_name, :middle_name, :last_name, :extension, :email, :profile_pic, :password, :role, :date_of_birth, :sex, :house_number, :street, :subdivision, :barangay, :city_municipality, :province, :postal_code, :created_at, :updated_at)";
@@ -109,7 +112,6 @@ function registerUser($userInput) {
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 
 if ($requestMethod == "OPTIONS") {
-   // Send a 200 OK response for preflight requests
    http_response_code(200);
    exit();
 }
@@ -126,6 +128,8 @@ if ($requestMethod == "POST") {
       echo json_encode($data);
       exit();
    }
+
+   error_log('Received data: ' . print_r($inputData, true)); // Log received data
 
    $registerUser = registerUser($inputData);
    echo $registerUser;
