@@ -9,14 +9,14 @@ import userLoginData from '../../../../Client/hanapin_backend/data/UserLoginData
 const UserRegister = () => {
    const navigate = useNavigate();
    const [googleUser, setGoogleUser] = useState(null);
-   const [cookies, setCookie] = useCookies(['user']);
-   const [userData, setUserData] = useState(userLoginData.getData('user'));
+   const [cookies, setCookie, removeCookie] = useCookies(['user']);
+   const [userData, setUserData] = useState(userLoginData.getData('user') || {});
    const [formData, setFormData] = useState({
-      first_name: '' ,
+      first_name: '',
       middle_name: '',
       last_name: '',
       extension: '',
-      email: userData.email,
+      email: userData.email || '',
       profile_pic: '',
       password: '',
       role: 'User',
@@ -31,52 +31,85 @@ const UserRegister = () => {
       postal_code: '',
    });
 
-   const handleGoogleLoginSuccess = (credentialResponse) => {
+   const checkEmailExists = async (email) => {
+      try {
+         const response = await axios.post('http://localhost/hanapin/Client/hanapin_backend/api/readUserEmail.php', { email });
+         console.log('checkEmailExists response:', response.data);
+         return response.data.status === 200;
+      } catch (error) {
+         console.error('Error checking email:', error);
+         return false;
+      }
+   };
+
+   const handleGoogleLoginSuccess = async (credentialResponse) => {
       const decoded = jwtDecode(credentialResponse.credential);
       setGoogleUser(decoded);
-      setCookie('user', JSON.stringify(decoded), { path: '/' });
-      userLoginData.setData('user', decoded);
+      // setCookie('user', JSON.stringify(decoded), { path: '/' });
+      // userLoginData.setData('user', decoded);
+      setFormData((prevFormData) => ({
+         ...prevFormData,
+         email: decoded.email,
+      }));
       console.log('Login Success:', decoded);
-      console.log('User Email:', userLoginData.getData('user').email);
+
+      const emailExists = await checkEmailExists(decoded.email);
+      console.log('Email exists:', emailExists);
+      if (emailExists) {
+         const confirmRedirect = window.confirm('Email already registered. Redirecting to login page.');
+         removeCookie('user', { path: '/' });
+         userLoginData.setData('user', null);
+         if (confirmRedirect) {
+            navigate('/login');
+         }
+      }
    };
-   
+
    useEffect(() => {
       const updateListener = () => {
-         setUserData(userLoginData.getData('user'));
+         setUserData(userLoginData.getData('user') || {});
       };
-      userLoginData.subscribe(updateListener); // Subscribe to userLoginData updates
+      userLoginData.subscribe(updateListener);
       return () => {
-         userLoginData.unsubscribe(updateListener); // Unsubscribe when component unmounts
+         userLoginData.unsubscribe(updateListener);
       };
    }, []);
 
    const handleGoogleLoginError = () => {
-      console.log('Login Failed');
+      console.error('Google Login Failed');
    };
 
    const handleChange = (e) => {
       const { name, value } = e.target;
-      setFormData({
-         ...formData,
+      setFormData((prevData) => ({
+         ...prevData,
          [name]: value,
-      });
+      }));
    };
 
-   const handleSubmit = (e) => {
+   const handleSubmit = async (e) => {
       e.preventDefault();
-      // Submit form data to the backend using axios
-      axios.post('http://localhost/hanapin/Client/hanapin_backend/api/createUserAccount.php', formData)
-         .then((response) => {
-            if (response.data.status === 201) {
-               console.log('User Created Successfully');
-               navigate('/login');
-            } else {
-               console.error('Error:', response.data.message);
-            }
-         })
-         .catch((error) => {
-            console.error('Error:', error);
-         });
+      if (!googleUser) {
+         console.error('Google user data not retrieved');
+         return;
+      }
+
+      console.log('Submitting form data:', formData);
+
+      try {
+         const response = await axios.post('http://localhost/hanapin/Client/hanapin_backend/api/createUserAccount.php', formData);
+         console.log('Response:', response.data);
+         if (response.data.status === 201) {
+            console.log('User Created Successfully');
+            removeCookie('user', { path: '/' });
+            userLoginData.setData('user', null);
+            navigate('/login');
+         } else {
+            console.error('Error:', response.data.message);
+         }
+      } catch (error) {
+         console.error('Error submitting data:', error);
+      }
    };
 
    return (
@@ -85,7 +118,7 @@ const UserRegister = () => {
          <GoogleLogin onSuccess={handleGoogleLoginSuccess} onError={handleGoogleLoginError} />
          {googleUser && (
             <form onSubmit={handleSubmit}>
-               <div>
+               <div style={{ marginTop: '20px' }}>
                   <label>First Name</label>
                   <input type="text" name="first_name" placeholder="First Name" value={formData.first_name} onChange={handleChange} required />
                </div>
@@ -111,7 +144,7 @@ const UserRegister = () => {
                </div>
                <div>
                   <label>Date of Birth</label>
-                  <input type="date" name="date_of_birth" placeholder="Date of Birth" value={formData.date_of_birth} onChange={handleChange} required />
+                  <input type="date" name="date_of_birth" value={formData.date_of_birth} onChange={handleChange} required />
                </div>
                <div>
                   <label>Sex</label>
