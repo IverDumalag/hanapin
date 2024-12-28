@@ -5,6 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import userLoginData from '../../../../Client/hanapin_backend/data/UserLoginData';
+import './UserRegister.css';
 
 const UserRegister = () => {
    const navigate = useNavigate();
