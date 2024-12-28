@@ -6,9 +6,11 @@ import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import userLoginData from '../../../../Client/hanapin_backend/data/UserLoginData';
 import './UserRegister.css';
+import useDrivePicker from 'react-google-drive-picker';
 
 const UserRegister = () => {
    const navigate = useNavigate();
+   const [openPicker, authResponse] = useDrivePicker();
    const [googleUser, setGoogleUser] = useState(null);
    const [cookies, setCookie, removeCookie] = useCookies(['user']);
    const [userData, setUserData] = useState(userLoginData.getData('user') || {});
@@ -113,6 +115,74 @@ const UserRegister = () => {
       }
    };
 
+   const googlePickerClientId = import.meta.env.VITE_GOOGLE_PICKER_CLIENT_ID;
+   const googlePickerApiKey = import.meta.env.VITE_GOOGLE_PICKER_API_KEY;
+   const googlePickerAccessToken = import.meta.env.VITE_GOOGLE_PICKER_ACCESS_TOKEN;
+   const googleDriveFolderId = import.meta.env.VITE_GOOGLE_PICKER_FOLDER_ID; 
+
+   const handleOpenPicker = () => {
+      openPicker({
+        clientId: googlePickerClientId,
+        developerKey: googlePickerApiKey,
+        viewId: "DOCS_IMAGES",
+        token: googlePickerAccessToken,
+        showUploadView: true,
+        showUploadFolders: false,
+        supportDrives: true,
+        multiselect: false,
+        customScopes: ['https://www.googleapis.com/auth/drive.file'],
+
+        callbackFunction: (data) => {
+         if (data.action === 'picked') {
+            const file = data.docs[0];
+            const fileId = file.id; 
+            const directUrl = `https://drive.google.com/thumbnail?id=${fileId}`; 
+            uploadFileToFolder(fileId);
+            setFormData((prevData) => ({
+               ...prevData,
+               profile_pic: directUrl,
+            }));
+         } else if (data.action === 'cancel') {
+            console.log('User clicked cancel/close button');
+         }
+      },
+      });
+    };
+
+    const uploadFileToFolder = async (fileId) => {
+      try {
+         const response = await axios.post(
+            `https://www.googleapis.com/drive/v3/files/${fileId}/copy`,
+            {
+               parents: [googleDriveFolderId],
+            },
+            {
+               headers: {
+                  Authorization: `Bearer ${googlePickerAccessToken}`,
+               },
+            }
+         );
+         const copiedFileId = response.data.id;
+         const directUrl = `https://drive.google.com/thumbnail?id=${copiedFileId}`;
+
+         await axios.delete(`https://www.googleapis.com/drive/v3/files/${fileId}`, {
+            headers: {
+               Authorization: `Bearer ${googlePickerAccessToken}`,
+            },
+         });
+
+         setFormData((prevData) => ({
+            ...prevData,
+            profile_pic: directUrl,
+         }));
+         console.log('File uploaded to folder:', response.data);
+         return directUrl;
+      } catch (error) {
+         console.error('Error uploading file to folder:', error);
+         return null;
+      }
+   };
+
    return (
       <div>
          <h1>Register</h1>
@@ -182,6 +252,20 @@ const UserRegister = () => {
                <div>
                   <label>Postal Code</label>
                   <input type="text" name="postal_code" placeholder="Postal Code" value={formData.postal_code} onChange={handleChange} required />
+               </div>
+               <div>
+                  <label>Profile Picture</label>
+                  {formData.profile_pic && (
+                     <div>
+                        <img
+                           src={formData.profile_pic}
+                           alt="Selected Profile"
+                           style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', objectPosition: 'top center' }}
+                        />
+                     </div>
+                  )}
+                  <input type="text" name="profile_pic" value={formData.profile_pic} readOnly />
+                  <button type="button" onClick={handleOpenPicker}>Select Picture</button>
                </div>
                <button type="submit">Register</button>
             </form>
