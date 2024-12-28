@@ -6,11 +6,9 @@ import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import userLoginData from '../../../../Client/hanapin_backend/data/UserLoginData';
 import './UserRegister.css';
-import useDrivePicker from 'react-google-drive-picker';
 
 const UserRegister = () => {
    const navigate = useNavigate();
-   const [openPicker, authResponse] = useDrivePicker();
    const [googleUser, setGoogleUser] = useState(null);
    const [cookies, setCookie, removeCookie] = useCookies(['user']);
    const [userData, setUserData] = useState(userLoginData.getData('user') || {});
@@ -48,8 +46,6 @@ const UserRegister = () => {
    const handleGoogleLoginSuccess = async (credentialResponse) => {
       const decoded = jwtDecode(credentialResponse.credential);
       setGoogleUser(decoded);
-      // setCookie('user', JSON.stringify(decoded), { path: '/' });
-      // userLoginData.setData('user', decoded);
       setFormData((prevFormData) => ({
          ...prevFormData,
          email: decoded.email,
@@ -115,71 +111,43 @@ const UserRegister = () => {
       }
    };
 
-   const googlePickerClientId = import.meta.env.VITE_GOOGLE_PICKER_CLIENT_ID;
-   const googlePickerApiKey = import.meta.env.VITE_GOOGLE_PICKER_API_KEY;
    const googlePickerAccessToken = import.meta.env.VITE_GOOGLE_PICKER_ACCESS_TOKEN;
-   const googleDriveFolderId = import.meta.env.VITE_GOOGLE_PICKER_FOLDER_ID; 
+   const googleDriveFolderId = import.meta.env.VITE_GOOGLE_PICKER_FOLDER_ID;
 
-   const handleOpenPicker = () => {
-      openPicker({
-        clientId: googlePickerClientId,
-        developerKey: googlePickerApiKey,
-        viewId: "DOCS_IMAGES",
-        token: googlePickerAccessToken,
-        showUploadView: true,
-        showUploadFolders: false,
-        supportDrives: true,
-        multiselect: false,
-        customScopes: ['https://www.googleapis.com/auth/drive.file'],
+   const handleFileChange = async (e) => {
+      const file = e.target.files[0];
+      if (file) {
+         const metadata = {
+            name: file.name,
+            parents: [googleDriveFolderId],
+         };
 
-        callbackFunction: (data) => {
-         if (data.action === 'picked') {
-            const file = data.docs[0];
-            const fileId = file.id; 
-            const directUrl = `https://drive.google.com/thumbnail?id=${fileId}`; 
-            uploadFileToFolder(fileId);
+         const formData = new FormData();
+         formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+         formData.append('file', file);
+
+         try {
+            const response = await axios.post(
+               `https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart`,
+               formData,
+               {
+                  headers: {
+                     Authorization: `Bearer ${googlePickerAccessToken}`,
+                     'Content-Type': 'multipart/related',
+                  },
+               }
+            );
+
+            const fileId = response.data.id;
+            const directUrl = `https://drive.google.com/thumbnail?id=${fileId}`;
+
             setFormData((prevData) => ({
                ...prevData,
                profile_pic: directUrl,
             }));
-         } else if (data.action === 'cancel') {
-            console.log('User clicked cancel/close button');
+         } catch (error) {
+            console.error('Error uploading file to Google Drive:', error);
          }
-      },
-      });
-    };
-
-    const uploadFileToFolder = async (fileId) => {
-      try {
-         const response = await axios.post(
-            `https://www.googleapis.com/drive/v3/files/${fileId}/copy`,
-            {
-               parents: [googleDriveFolderId],
-            },
-            {
-               headers: {
-                  Authorization: `Bearer ${googlePickerAccessToken}`,
-               },
-            }
-         );
-         const copiedFileId = response.data.id;
-         const directUrl = `https://drive.google.com/thumbnail?id=${copiedFileId}`;
-
-         await axios.delete(`https://www.googleapis.com/drive/v3/files/${fileId}`, {
-            headers: {
-               Authorization: `Bearer ${googlePickerAccessToken}`,
-            },
-         });
-
-         setFormData((prevData) => ({
-            ...prevData,
-            profile_pic: directUrl,
-         }));
-         console.log('File uploaded to folder:', response.data);
-         return directUrl;
-      } catch (error) {
-         console.error('Error uploading file to folder:', error);
-         return null;
       }
    };
 
@@ -264,8 +232,7 @@ const UserRegister = () => {
                         />
                      </div>
                   )}
-                  <input type="text" name="profile_pic" value={formData.profile_pic} readOnly />
-                  <button type="button" onClick={handleOpenPicker}>Select Picture</button>
+                  <input type="file" onChange={handleFileChange} />
                </div>
                <button type="submit">Register</button>
             </form>
