@@ -1,0 +1,17 @@
+.bg {
+   background-image: url('assets/BG TEMPLATE.png');
+   background-size: cover;
+   width: 100vw;
+   height: 100vh;
+   position: absolute;
+   top: 0;
+   left: 0;
+   z-index: -1;
+}
+
+.container {
+   position: relative;
+   z-index: 1;
+   padding: 20px;
+   font-family: 'Inter, sans-serif';
+}
