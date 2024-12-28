@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import userLoginData from '../../../../Client/hanapin_backend/data/UserLoginData';
+import bgTemplate from '../../../../Client/hanapin_frontend/src/assets/BG TEMPLATE.png'; // Importing background image
+import './UserLogin.css';
 
 const UserLogin = () => {
    const navigate = useNavigate();
@@ -32,23 +34,43 @@ const UserLogin = () => {
    };
 
    return (
-      <div>
-         <h1>Login</h1>
-         {error && <p style={{ color: 'red' }}>{error}</p>}
-         <form onSubmit={handleSubmit}>
-            <div>
-               <label>Email</label>
-               <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+      <div
+         className="container"
+         style={{
+            backgroundImage: `url(${bgTemplate})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+         }}
+      >
+         <form className="login-form" onSubmit={handleSubmit}>
+            <h1>Member Login</h1>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+
+            <div className='email-input'>
+               <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="email"
+               />
             </div>
-            <div>
-               <label>Password</label>
-               <input type="password" name="password" value={formData.password} onChange={handleChange} required />
+            <div className='password-input'>
+               <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="password"
+                  required
+               />
             </div>
-            <button type="submit">Login</button>
+
+            <button type="submit">LOGIN</button>
+            <button type="button" className="register-button" onClick={() => navigate('/register')} style={{ backgroundColor: '#BA96DD' }}>
+               REGISTER
+            </button>
          </form>
-         <button onClick={() => navigate('/register')}>
-            Register Here
-         </button>
       </div>
    );
 };

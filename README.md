@@ -8,6 +8,11 @@ Packages Installed
 <li>npm install react-router-dom</li>
 <li>npm install react-cookie</li>
 <li>npm install dotenv</li>
+<li>npm install @mui/material @emotion/react @emotion/styled</li>
+<li>npm install @fontsource/roboto</li>
+<li>npm install @mui/icons-material</li>
+<li>npm install @mui/lab @date-io/date-fns date-fns</li>
+<li>npm i react-google-drive-picker</li>
 <br/>
 Developers:<br/>
 Dumalag, Iver Marl<br/>

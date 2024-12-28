@@ -1,0 +1,50 @@
+.bg {
+   background-image: url('assets/BG TEMPLATE.png');
+   background-size: cover;
+}
+
+button {
+   width: 275px;
+   height: 74px;
+   font-family: var(--button-font-family, 'Arial');
+   border-radius: 12px;
+   opacity: 1;
+   font-size: 16px;
+   font-weight: bold;
+   border: none;
+   cursor: pointer;
+   transition: background-color 0.3s ease, transform 0.2s ease;
+   text-align: left;
+   padding-left: 50px; /* Adjust the padding as needed */
+   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add text shadow */
+}
+
+button:focus {
+   outline: none;
+}
+
+button:hover {
+   transform: scale(1.05);
+}
+
+button:active {
+   transform: scale(0.95);
+}
+
+button:nth-child(1) {
+   background-color: #F0D5E3;
+   color: white;
+   position: absolute;
+   top: 720px;
+   left: 440px;
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+button:nth-child(2) {
+   background-color: #BA96DD;
+   color: black;
+   position: absolute;
+   top: 630px;
+   left: 440px;
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
