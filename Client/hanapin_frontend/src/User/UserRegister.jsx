@@ -46,8 +46,6 @@ const UserRegister = () => {
    const handleGoogleLoginSuccess = async (credentialResponse) => {
       const decoded = jwtDecode(credentialResponse.credential);
       setGoogleUser(decoded);
-      // setCookie('user', JSON.stringify(decoded), { path: '/' });
-      // userLoginData.setData('user', decoded);
       setFormData((prevFormData) => ({
          ...prevFormData,
          email: decoded.email,
@@ -110,6 +108,46 @@ const UserRegister = () => {
          }
       } catch (error) {
          console.error('Error submitting data:', error);
+      }
+   };
+
+   const googlePickerAccessToken = import.meta.env.VITE_GOOGLE_PICKER_ACCESS_TOKEN;
+   const googleDriveFolderId = import.meta.env.VITE_GOOGLE_PICKER_FOLDER_ID;
+
+   const handleFileChange = async (e) => {
+      const file = e.target.files[0];
+      if (file) {
+         const metadata = {
+            name: file.name,
+            parents: [googleDriveFolderId],
+         };
+
+         const formData = new FormData();
+         formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+         formData.append('file', file);
+
+         try {
+            const response = await axios.post(
+               `https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart`,
+               formData,
+               {
+                  headers: {
+                     Authorization: `Bearer ${googlePickerAccessToken}`,
+                     'Content-Type': 'multipart/related',
+                  },
+               }
+            );
+
+            const fileId = response.data.id;
+            const directUrl = `https://drive.google.com/thumbnail?id=${fileId}`;
+
+            setFormData((prevData) => ({
+               ...prevData,
+               profile_pic: directUrl,
+            }));
+         } catch (error) {
+            console.error('Error uploading file to Google Drive:', error);
+         }
       }
    };
 
@@ -182,6 +220,19 @@ const UserRegister = () => {
                <div>
                   <label>Postal Code</label>
                   <input type="text" name="postal_code" placeholder="Postal Code" value={formData.postal_code} onChange={handleChange} required />
+               </div>
+               <div>
+                  <label>Profile Picture</label>
+                  {formData.profile_pic && (
+                     <div>
+                        <img
+                           src={formData.profile_pic}
+                           alt="Selected Profile"
+                           style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', objectPosition: 'top center' }}
+                        />
+                     </div>
+                  )}
+                  <input type="file" onChange={handleFileChange} />
                </div>
                <button type="submit">Register</button>
             </form>

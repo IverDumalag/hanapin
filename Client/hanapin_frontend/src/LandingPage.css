@@ -1,50 +1,91 @@
-.bg {
-   background-image: url('assets/BG TEMPLATE.png');
-   background-size: cover;
+.hanapin-landing-page {
+   position: relative;
+   width: 100vw;
+   height: 100vh;
+   overflow: hidden;
+   margin: 0;
+   padding: 0;
+   font-family: 'Inter, sans-serif';
+   background-size: contain;
 }
 
-button {
+.hanapin-text-container {
+   position: absolute;
+   top: 280px;
+   left: 440px;
+   text-align: left;
+}
+
+.hanapin-title {
+   margin-bottom: 20px;
+}
+
+.hanapin-title h1 {
+   font-size: 45px;
+   color: #AFB0CE;
+   margin-bottom: 0;
+   font-weight: lighter;
+}
+
+.hanapin-title h1 span {
+   color: #BA96DD;
+}
+
+.hanapin-subtitle {
+   margin-bottom: 20px;
+}
+
+.hanapin-subtitle p {
+   font-size: 65px;
+   color: #F5BEDB;
+   font-weight: bold;
+   margin: 0;
+}
+
+.hanapin-description p {
+   font-size: 24px;
+   color: #000000;
+   font-weight: lighter;
+   margin-top: 20px;
+}
+
+.hanapin-button-container {
+   position: absolute;
+   top: 630px;
+   left: 440px;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 20px;
+}
+
+.hanapin-button-container button {
    width: 275px;
    height: 74px;
-   font-family: var(--button-font-family, 'Arial');
+   font-family: Arial;
    border-radius: 12px;
-   opacity: 1;
-   font-size: 16px;
+   font-size: 24px;
    font-weight: bold;
    border: none;
    cursor: pointer;
    transition: background-color 0.3s ease, transform 0.2s ease;
-   text-align: left;
-   padding-left: 50px; /* Adjust the padding as needed */
-   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add text shadow */
+   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-button:focus {
-   outline: none;
-}
-
-button:hover {
+.hanapin-button-container button:hover {
    transform: scale(1.05);
 }
 
-button:active {
+.hanapin-button-container button:active {
    transform: scale(0.95);
 }
 
-button:nth-child(1) {
+.hanapin-login-button {
    background-color: #F0D5E3;
    color: white;
-   position: absolute;
-   top: 720px;
-   left: 440px;
-   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-button:nth-child(2) {
+.hanapin-register-button {
    background-color: #BA96DD;
-   color: black;
-   position: absolute;
-   top: 630px;
-   left: 440px;
-   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+   color: white;
 }
