@@ -152,40 +152,50 @@ const UserRegister = () => {
    };
 
    return (
-      <div>
-         <h1>Register</h1>
-         <GoogleLogin onSuccess={handleGoogleLoginSuccess} onError={handleGoogleLoginError} />
+      <div style={{ fontSize: '12px', display: 'flex', color: '#AFB0CE', fontFamily: 'Arial', flexDirection: 'column', alignItems: 'center' }}>
+         <h1>Sign In your Google Account to Register !</h1>
+         <br></br>
+         <GoogleLogin onSuccess={handleGoogleLoginSuccess} onError={handleGoogleLoginError} /> 
          {googleUser && (
-            <form onSubmit={handleSubmit}>
-               <div style={{ marginTop: '20px' }}>
+
+         
+            <form onSubmit={handleSubmit} className="form-container"> 
+               <div className="FIRSTNAME">
                   <label>First Name</label>
                   <input type="text" name="first_name" placeholder="First Name" value={formData.first_name} onChange={handleChange} required />
                </div>
-               <div>
+
+               <div className="MIDDLENAME">
                   <label>Middle Name</label>
                   <input type="text" name="middle_name" placeholder="Middle Name" value={formData.middle_name} onChange={handleChange} />
                </div>
-               <div>
+
+               <div className="LASTNAME">
                   <label>Last Name</label>
                   <input type="text" name="last_name" placeholder="Last Name" value={formData.last_name} onChange={handleChange} required />
                </div>
-               <div>
+
+               <div className="EXTENSION"> 
                   <label>Extension</label>
                   <input type="text" name="extension" placeholder="Extension" value={formData.extension} onChange={handleChange} />
                </div>
-               <div>
+
+               <div className="EMAIL">
                   <label>Email</label>
                   <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} readOnly />
                </div>
-               <div>
+
+               <div className="PASSWORD">
                   <label>Password</label>
                   <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
                </div>
-               <div>
+
+               <div className="DATE_OF_BIRTH">
                   <label>Date of Birth</label>
                   <input type="date" name="date_of_birth" value={formData.date_of_birth} onChange={handleChange} required />
                </div>
-               <div>
+
+               <div className="SEXq">
                   <label>Sex</label>
                   <select name="sex" value={formData.sex} onChange={handleChange} required>
                      <option value="">Select</option>
@@ -193,35 +203,43 @@ const UserRegister = () => {
                      <option value="Female">Female</option>
                   </select>
                </div>
-               <div>
+
+               <div className="HOUSENUMBER">
                   <label>House Number</label>
                   <input type="text" name="house_number" placeholder="House Number" value={formData.house_number} onChange={handleChange} required />
                </div>
-               <div>
+
+               <div className="STREET">
                   <label>Street</label>
                   <input type="text" name="street" placeholder="Street" value={formData.street} onChange={handleChange} required />
                </div>
-               <div>
+
+               <div className="SUBDIVISION">
                   <label>Subdivision</label>
                   <input type="text" name="subdivision" placeholder="Subdivision" value={formData.subdivision} onChange={handleChange} required />
                </div>
-               <div>
+
+               <div className="BARANGAY">
                   <label>Barangay</label>
                   <input type="text" name="barangay" placeholder="Barangay" value={formData.barangay} onChange={handleChange} required />
                </div>
-               <div>
+
+               <div className="CITYMUNICIPALITY">
                   <label>City/Municipality</label>
                   <input type="text" name="city_municipality" placeholder="City/Municipality" value={formData.city_municipality} onChange={handleChange} required />
                </div>
-               <div>
+
+               <div className="PROVINCE">
                   <label>Province</label>
                   <input type="text" name="province" placeholder="Province" value={formData.province} onChange={handleChange} required />
                </div>
-               <div>
+
+               <div className="POSTALCODE">
                   <label>Postal Code</label>
                   <input type="text" name="postal_code" placeholder="Postal Code" value={formData.postal_code} onChange={handleChange} required />
                </div>
-               <div>
+
+               <div className="PROFILEPIC">
                   <label>Profile Picture</label>
                   {formData.profile_pic && (
                      <div>
@@ -237,7 +255,8 @@ const UserRegister = () => {
                <button type="submit">Register</button>
             </form>
          )}
-         <button onClick={() => navigate('/login')}>Go to Login</button>
+         <br></br>
+         <button style={{padding: '15px', width: '200px', textAlign: 'center', fontFamily: 'Arial'}} onClick={() => navigate('/login')}>GO BACK TO LOGIN</button>
       </div>
    );
 };
