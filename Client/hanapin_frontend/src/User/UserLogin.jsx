@@ -34,14 +34,7 @@ const UserLogin = () => {
    };
 
    return (
-      <div
-         className="container"
-         style={{
-            backgroundImage: `url(${bgTemplate})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-         }}
-      >
+      <div className="hanapin-login-page" style={{ backgroundImage: `url(${bgTemplate})` }}>
          <form className="login-form" onSubmit={handleSubmit}>
             <h1>Member Login</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -65,8 +58,8 @@ const UserLogin = () => {
                   required
                />
             </div>
-
-            <button type="submit">LOGIN</button>
+            <p style={{fontFamily: 'Arial', color: '#AFB0CE'}}>Log in if you are already a member.</p>
+            <button type="submit">LOGIN</button> <p style={{fontFamily: 'Arial', color: '#AFB0CE'}}>Register if you are not yet a member.</p>
             <button type="button" className="register-button" onClick={() => navigate('/register')} style={{ backgroundColor: '#BA96DD' }}>
                REGISTER
             </button>
