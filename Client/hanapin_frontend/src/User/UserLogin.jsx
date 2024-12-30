@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import userLoginData from '../../../../Client/hanapin_backend/data/UserLoginData';
-import bgTemplate from '../../../../Client/hanapin_frontend/src/assets/BG TEMPLATE.png'; // Importing background image
+import bgTemplate from '../../../../Client/hanapin_frontend/src/assets/BG TEMPLATE.png'; 
 import './UserLogin.css';
 
 const UserLogin = () => {
