@@ -22,21 +22,23 @@ const LandingPage = () => {
                   Hana<span>PIN,</span>
                </h1>
             </div>
+
             <div className="hanapin-subtitle">
-               <p>Helps Paws find</p>
-               <p>their way home</p>
+               <p>Helps Paws find <br></br>their way home</p>
             </div>
+
             <div className="hanapin-description">
-               <p>description</p>
+               <p>HanaPin is a community app that helps reunite lost pets with their owners. <br></br> HanaPin connects people and pets quickly with real-time alerts.</p>
             </div>
+
          </div>
-         <div className="hanapin-button-container">
-            <button onClick={redirectToLogin} className="hanapin-login-button">
-               LOGIN
-            </button>
-            <button onClick={redirectToRegister} className="hanapin-register-button">
-               REGISTER
-            </button>
+            <div className="hanapin-button-container">
+               <button onClick={redirectToLogin} className="hanapin-login-button">
+                  LOGIN
+               </button>
+               <button onClick={redirectToRegister} className="hanapin-register-button">
+                  REGISTER
+               </button>
          </div>
       </div>
    );
