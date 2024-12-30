@@ -24,52 +24,52 @@ CREATE TABLE tbl_accounts (
 
 -- Table: tbl_posts
 CREATE TABLE tbl_posts (
-    post_id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'POST+AutoIncrement+user_id+TIMESTAMP',
+    post_id VARCHAR(255) PRIMARY KEY COMMENT 'POST+AutoIncrement+user_id+TIMESTAMP',
     user_id VARCHAR(255) NOT NULL,
     content_text TEXT NOT NULL,
     content_picture VARCHAR(255),
-    street VARCHAR(100) COMMENT 'Last Location Seen',
-    subdivision VARCHAR(100) COMMENT 'Last Location Seen',
-    barangay VARCHAR(100) NOT NULL COMMENT 'Last Location Seen',
+    last_street VARCHAR(100) COMMENT 'Last Location Seen',
+    last_subdivision VARCHAR(100) COMMENT 'Last Location Seen',
+    last_barangay VARCHAR(100) NOT NULL COMMENT 'Last Location Seen',
     content_state VARCHAR(50) NOT NULL COMMENT 'MISSING, FOUND, DELETED',
     post_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME,
-    FOREIGN KEY (user_id) REFERENCES tbl_Accounts(user_id)
+    FOREIGN KEY (user_id) REFERENCES tbl_accounts(user_id)
 );
 
 -- Table: tbl_comments
 CREATE TABLE tbl_comments (
-    comment_id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'COM+AutoIncrement+user_id+TIMESTAMP',
-    post_id INT NOT NULL,
+    comment_id VARCHAR(255) PRIMARY KEY COMMENT 'COM+AutoIncrement+user_id+TIMESTAMP',
+    post_id VARCHAR(255) NOT NULL,
     user_id VARCHAR(255) NOT NULL,
     comment TEXT NOT NULL,
     comment_image VARCHAR(255),
     comment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (post_id) REFERENCES tbl_Posts(post_id),
-    FOREIGN KEY (user_id) REFERENCES tbl_Accounts(user_id)
+    FOREIGN KEY (post_id) REFERENCES tbl_posts(post_id),
+    FOREIGN KEY (user_id) REFERENCES tbl_accounts(user_id)
 );
 
 -- Table: tbl_conversations
 CREATE TABLE tbl_conversations (
-    conversation_id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'CONVO+AutoIncrement+participant_one+participant_two+TIMESTAMP',
+    conversation_id VARCHAR(255) PRIMARY KEY COMMENT 'CONVO+AutoIncrement+participant_one+participant_two+TIMESTAMP',
     participant_one VARCHAR(255) NOT NULL,
     participant_two VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Conversation start date',
-    FOREIGN KEY (participant_one) REFERENCES tbl_Accounts(user_id),
-    FOREIGN KEY (participant_two) REFERENCES tbl_Accounts(user_id)
+    FOREIGN KEY (participant_one) REFERENCES tbl_accounts(user_id),
+    FOREIGN KEY (participant_two) REFERENCES tbl_accounts(user_id)
 );
 
 -- Table: tbl_messages
 CREATE TABLE tbl_messages (
-    message_id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'MSG+AutoIncrement+sender_id+TIMESTAMP',
-    conversation_id INT NOT NULL,
+    message_id VARCHAR(255) PRIMARY KEY COMMENT 'MSG+AutoIncrement+sender_id+TIMESTAMP',
+    conversation_id VARCHAR(255) NOT NULL,
     sender_id VARCHAR(255) NOT NULL,
     message_text TEXT NOT NULL,
     message_image VARCHAR(255),
     message_status VARCHAR(50) DEFAULT 'SENT' COMMENT 'SENT, DELIVERED, READ',
     sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (conversation_id) REFERENCES tbl_Conversations(conversation_id),
-    FOREIGN KEY (sender_id) REFERENCES tbl_Accounts(user_id)
+    FOREIGN KEY (conversation_id) REFERENCES tbl_conversations(conversation_id),
+    FOREIGN KEY (sender_id) REFERENCES tbl_accounts(user_id)
 );
 
 -- Table: tbl_images
