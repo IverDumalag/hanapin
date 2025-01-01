@@ -10,11 +10,19 @@ function registerUser($userInput) {
    global $conn;
 
    // Generate user ID
-   $stmt = $conn->prepare("SELECT COUNT(*) as count FROM tbl_accounts");
+   $stmt = $conn->prepare("SELECT user_id FROM tbl_accounts ORDER BY user_id DESC LIMIT 1");
    $stmt->execute();
    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-   $count = $result['count'] + 1;
-   $user_id = 'US-' . str_pad($count, 7, '0', STR_PAD_LEFT);
+   
+   if ($result) {
+      $lastUserId = $result['user_id'];
+      $lastUserIdNumber = (int)substr($lastUserId, 3);
+      $newUserIdNumber = $lastUserIdNumber + 1;
+   } else {
+      $newUserIdNumber = 1;
+   }
+   
+   $user_id = 'US-' . str_pad($newUserIdNumber, 7, '0', STR_PAD_LEFT);
 
    $first_name = $userInput['first_name'];
    $middle_name = $userInput['middle_name'];
