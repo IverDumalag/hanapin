@@ -153,6 +153,7 @@ const UserRegister = () => {
 
    return (
       <div style={{ fontSize: '12px', display: 'flex', color: '#AFB0CE', fontFamily: 'Arial', flexDirection: 'column', alignItems: 'center' }}>
+
          <h1>Sign In your Google Account to Register !</h1>
          <br></br>
          <GoogleLogin onSuccess={handleGoogleLoginSuccess} onError={handleGoogleLoginError} /> 
@@ -240,7 +241,7 @@ const UserRegister = () => {
                </div>
 
                <div className="PROFILEPIC">
-                  <label>Profile Picture</label>
+                  <label style={{fontSize: '1rem'}}>Profile Picture </label>
                   {formData.profile_pic && (
                      <div>
                         <img
@@ -250,13 +251,13 @@ const UserRegister = () => {
                         />
                      </div>
                   )}
-                  <input type="file" onChange={handleFileChange} />
+                  <input className='file'type="file" onChange={handleFileChange} />
                </div>
-               <button type="submit">Register</button>
+               <button className='register-button' type="submit">REGISTER ME !</button>
             </form>
          )}
          <br></br>
-         <button style={{padding: '15px', width: '200px', textAlign: 'center', fontFamily: 'Arial'}} onClick={() => navigate('/login')}>GO BACK TO LOGIN</button>
+         <button className= 'gobacktologin'style={{padding: '15px', width: '200px', textAlign: 'center', fontFamily: 'Arial'}} onClick={() => navigate('/login')}>GO BACK TO LOGIN</button>
       </div>
    );
 };
