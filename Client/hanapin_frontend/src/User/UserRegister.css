@@ -89,3 +89,65 @@
    border-radius: 5px;
    font-size: 1rem;
 }
+
+.register-button {
+   background-color: #AFB0CE;
+   color: white;
+   padding: 15px 20px;
+   border: none;
+   border-radius: 5px;
+   cursor: pointer;
+   font-size: 1.3rem;
+   transition: background-color 0.3s ease;
+}
+
+.register-button:hover {
+   background-color: #AFB0CE;
+}
+
+.gobacktologin {
+   padding: 15px;
+   width: 200px;
+   text-align: center;
+   font-family: 'Arial', sans-serif;
+   background-color: #AFB0CE;
+   color: #FFFFFF;
+   border: 1px solid #c5c5c5;
+   border-radius: 5px;
+   cursor: pointer;
+   font-size: 1rem;
+   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.gobacktologin:hover {
+   background-color: #BA96DD;
+}
+
+.PROFILEPIC label {
+   margin-bottom: 5px;
+   color: #707070;
+}
+
+.PROFILEPIC img {
+   width: 100px;
+   height: 100px;
+   border-radius: 50%;
+   object-fit: cover;
+   object-position: top center;
+   margin-top: 10px;
+}
+
+.file {
+   padding: 10px;
+   border: 1px solid #c5c5c5;
+   border-radius: 5px;
+   font-size: 1rem;
+   cursor: pointer;
+   background-color: #f9f9f9;
+   transition: background-color 0.3s ease;
+}
+
+.file:hover {
+   background-color: #e6e6e6;
+}
+
