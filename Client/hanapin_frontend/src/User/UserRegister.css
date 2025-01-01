@@ -22,12 +22,13 @@
    display: grid;
    grid-template-columns: repeat(3, 1fr);
    grid-template-rows: repeat(5, auto);
-   gap: 20px;
+   height: 60%;
+   gap: 30px;
    background: rgba(255, 255, 255, 0.1);
    backdrop-filter: blur(10px);
    border-radius: 10px;
    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-   padding: 20px;
+   padding: 40px;
 }
 
 .FIRSTNAME,
@@ -85,8 +86,10 @@
 .PROVINCE input,
 .POSTALCODE input {
    padding: 10px;
-   border: 1px solid #c5c5c5;
+   background-color: #FFFFFF;
+   border: 1px solid #AFB0CE;
    border-radius: 5px;
+   padding: 15px;
    font-size: 1rem;
 }
 
@@ -94,7 +97,7 @@
    background-color: #AFB0CE;
    color: white;
    padding: 15px 20px;
-   border: none;
+   border: 1px solid #000000;
    border-radius: 5px;
    cursor: pointer;
    font-size: 1.3rem;
@@ -112,9 +115,11 @@
    font-family: 'Arial', sans-serif;
    background-color: #AFB0CE;
    color: #FFFFFF;
-   border: 1px solid #c5c5c5;
+   border: none;
    border-radius: 5px;
    cursor: pointer;
+   margin-top: 10px;
+   margin-right: 76rem;
    font-size: 1rem;
    transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -151,3 +156,8 @@
    background-color: #e6e6e6;
 }
 
+.clear-button {
+   color: white;
+   cursor: pointer;
+   font-size: 1.3rem;
+}
