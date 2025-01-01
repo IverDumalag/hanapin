@@ -6,6 +6,7 @@ import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import userLoginData from '../../../../Client/hanapin_backend/data/UserLoginData';
 import './UserRegister.css';
+import bgTemplate from '../../../../Client/hanapin_frontend/src/assets/BG TEMPLATE.png';
 
 const UserRegister = () => {
    const navigate = useNavigate();
@@ -152,7 +153,21 @@ const UserRegister = () => {
    };
 
    return (
-      <div style={{ fontSize: '12px', display: 'flex', color: '#AFB0CE', fontFamily: 'Arial', flexDirection: 'column', alignItems: 'center' }}>
+      <div style={{ 
+         fontSize: '12px', 
+         display: 'flex', 
+         color: '#AFB0CE', 
+         fontFamily: 'Arial', 
+         flexDirection: 'column', 
+         alignItems: 'center',
+         backgroundImage: `url(${bgTemplate})`,
+         backgroundSize: 'cover',
+         backgroundPosition: 'center',
+         backgroundRepeat: 'no-repeat',
+         width: '99vw',
+         height: '98vh',
+         overflow: 'hidden'
+      }}>
 
          <h1>Sign In your Google Account to Register !</h1>
          <br></br>
