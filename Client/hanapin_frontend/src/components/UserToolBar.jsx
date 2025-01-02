@@ -9,10 +9,12 @@ import MenuItem from '@mui/material/MenuItem';
 import userLoginData from '../../../../Client/hanapin_backend/data/UserLoginData';
 import { useNavigate } from 'react-router-dom';
 import MessageIcon from '@mui/icons-material/Message';
+import HomeIcon from '@mui/icons-material/Home';
 
-export default function PrimarySearchAppBar({ children }) {
+export default function PrimarySearchAppBar({ children, onSearch }) {
    const navigate = useNavigate();
    const [anchorEl, setAnchorEl] = React.useState(null);
+   const [searchQuery, setSearchQuery] = React.useState('');
    const open = Boolean(anchorEl);
    const user = userLoginData.getData('user');
 
@@ -30,6 +32,28 @@ export default function PrimarySearchAppBar({ children }) {
       navigate('/login');
    };
 
+   const handleHomeRedirect = () => {
+      navigate('/user_home_page');
+   };
+
+   const handleSearchChange = (event) => {
+      setSearchQuery(event.target.value);
+   };
+
+   const handleSearchKeyPress = (event) => {
+      if (event.key === 'Enter') {
+         onSearch(searchQuery);
+      }
+   };
+
+   const handlUserProfileRedirect = () => {
+      navigate('/user_profile');
+   };
+
+   const handlUserMessagesRedirect = () => {
+      navigate('/user_messages');
+   };
+
    return (
       <Box sx={{ flexGrow: 1, margin: 0, padding: 0 }}>
          <AppBar position="fixed" sx={{ top: 0, left: 0, right: 0, bgcolor: 'lightgrey' }}>
@@ -38,20 +62,20 @@ export default function PrimarySearchAppBar({ children }) {
                   size="large"
                   edge="start"
                   color="inherit"
-                  aria-label="open drawer"
+                  aria-label="home"
                   sx={{ mr: 2 }}
+                  onClick={handleHomeRedirect}
                >
-                  <img
-                     src="https://via.placeholder.com/40"
-                     alt="menu"
-                     style={{ borderRadius: '50%', width: '40px', height: '40px' }}
-                  />
+                  <HomeIcon />
                </IconButton>
 
                <TextField
                   variant="outlined"
                   placeholder="Search…"
                   size="small"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  onKeyPress={handleSearchKeyPress}
                   sx={{ display: { xs: 'none', sm: 'block' }, width: '100%' }}
                />
 
@@ -63,6 +87,7 @@ export default function PrimarySearchAppBar({ children }) {
                      aria-label="messages"
                      color="inherit"
                      sx={{ mr: 2 }}
+                     onClick={handlUserMessagesRedirect}
                   >
                      <MessageIcon />
                   </IconButton>
@@ -97,7 +122,7 @@ export default function PrimarySearchAppBar({ children }) {
                      open={open}
                      onClose={handleClose}
                   >
-                     <MenuItem onClick={() => navigate('/profile')}>View Profile</MenuItem>
+                     <MenuItem onClick={() => navigate('/user_profile')}>View Profile</MenuItem>
                      <MenuItem onClick={handleLogout}>Logout</MenuItem>
                   </Menu>
                </Box>
