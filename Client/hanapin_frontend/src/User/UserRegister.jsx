@@ -86,6 +86,25 @@ const UserRegister = () => {
          [name]: value,
       }));
    };
+   const handleClearInputs = () => {
+      setFormData({
+          ...formData,
+          first_name: '',
+          middle_name: '',
+          last_name: '',
+          extension: '',
+          password: '',
+          date_of_birth: '',
+          sex: '',
+          house_number: '',
+          street: '',
+          subdivision: '',
+          barangay: '',
+          city_municipality: '',
+          province: '',
+          postal_code: '',
+      });
+  };
 
    const handleSubmit = async (e) => {
       e.preventDefault();
@@ -269,6 +288,19 @@ const UserRegister = () => {
                   <input className='file'type="file" onChange={handleFileChange} />
                </div>
                <button className='register-button' type="submit">REGISTER ME !</button>
+               <span
+                           className="clear-text"
+                           style={{
+                              color: '#000000',
+                              textDecoration: 'underline',
+                              cursor: 'pointer',
+                              fontSize: '18PX',
+                              marginLeft: '10px',
+                           }}
+                           onClick={handleClearInputs}
+                        >
+                           Clear
+               </span>
             </form>
          )}
          <br></br>
