@@ -5,6 +5,8 @@ import UserFilterBar from '../components/UserFilterBar';
 import { Box, Button, TextField, Typography, Modal } from '@mui/material';
 import UserMessagePreview from '../components/UserMessagePreview';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import userSelectData from '../../../../Client/hanapin_backend/data/UserSelectData';
 
 const UserHomePage = () => {
    const [userData, setUserData] = useState(userLoginData.getData('user'));
@@ -23,6 +25,8 @@ const UserHomePage = () => {
    });
    const [error, setError] = useState(null);
    const [filterCriteria, setFilterCriteria] = useState({ barangay: '', month: '', year: '' });
+   const [searchQuery, setSearchQuery] = useState('');
+   const navigate = useNavigate();
 
    useEffect(() => {
       const updateListener = () => {
@@ -168,20 +172,37 @@ const UserHomePage = () => {
       setFilterCriteria(criteria);
    };
 
+   const handleSearch = (query) => {
+      setSearchQuery(query);
+   };
+
    const filteredPosts = posts.filter((post) => {
       const matchesFilter = filter === 'ALL' ? true : post.content_state === filter;
       const matchesBarangay = filterCriteria.barangay ? post.last_barangay === filterCriteria.barangay : true;
       const matchesMonth = filterCriteria.month ? new Date(post.post_date).getMonth() + 1 === parseInt(filterCriteria.month) : true;
       const matchesYear = filterCriteria.year ? new Date(post.post_date).getFullYear() === parseInt(filterCriteria.year) : true;
-      return matchesFilter && matchesBarangay && matchesMonth && matchesYear;
+      const matchesSearch = post.content_text.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                   post.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                   post.last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                   post.last_street.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                   post.last_subdivision.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                   post.last_barangay.toLowerCase().includes(searchQuery.toLowerCase())||
+                   post.content_state.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesFilter && matchesBarangay && matchesMonth && matchesYear && matchesSearch;
    });
 
    const isCreatePostDisabled = !newPost.content || !newPost.lastStreet || !newPost.lastSubdivision || !newPost.lastBarangay || !newPost.contentPic;
 
+   const handleProfileClick = (userId) => {
+      userSelectData.setSelectedPostUserId(userId);
+      console.log('Selected post user ID:', userId);
+      navigate(`/user_otherprofile`);
+   };
+
    return (
       <>
          <Box sx={{ bgcolor: 'lightgrey', minHeight: '100vh' }}>
-            <UserToolBar />
+            <UserToolBar onSearch={handleSearch} />
             <Box sx={{ marginTop: '64px', display: 'flex' }}>
                <UserFilterBar onFilter={handleFilter} />
                <Box
@@ -221,7 +242,9 @@ const UserHomePage = () => {
                                  width: 50,
                                  height: 50,
                                  borderRadius: '50%',
+                                 cursor: 'pointer',
                               }}
+                              onClick={() => navigate(`/user_otherprofile?user_id=${userData.user_id}`)}
                            />
                            <TextField
                               fullWidth
@@ -278,7 +301,7 @@ const UserHomePage = () => {
                      <Box sx={{ mt: 2 }}>
                         {filteredPosts.length > 0 ? (
                            filteredPosts.map((post, index) => (
-                              <PostContent key={index} {...post} />
+                              <PostContent key={index} {...post} onProfileClick={handleProfileClick} />
                            ))
                         ) : (
                            <Typography variant="h6" align="center">
@@ -358,7 +381,7 @@ const UserHomePage = () => {
    );
 };
 
-const PostContent = ({ profile_pic, first_name, last_name, content_text, content_picture, last_street, last_subdivision, last_barangay, content_state, post_date }) => {
+const PostContent = ({ profile_pic, first_name, last_name, content_text, content_picture, last_street, last_subdivision, last_barangay, content_state, post_date, user_id, onProfileClick }) => {
    return (
       <Box
          sx={{
@@ -373,9 +396,16 @@ const PostContent = ({ profile_pic, first_name, last_name, content_text, content
             <img
                src={profile_pic || 'https://via.placeholder.com/50'}
                alt="Profile"
-               style={{ width: 50, height: 50, borderRadius: '50%' }}
+               style={{ width: 50, height: 50, borderRadius: '50%', cursor: 'pointer' }}
+               onClick={() => onProfileClick(user_id)}
             />
-            <Typography variant="h6">{`${first_name || ''} ${last_name || ''}`.trim()}</Typography>
+            <Typography
+               variant="h6"
+               sx={{ cursor: 'pointer' }}
+               onClick={() => onProfileClick(user_id)}
+            >
+               {`${first_name || ''} ${last_name || ''}`.trim()}
+            </Typography>
          </Box>
          
          <Box sx={{ mt: 2 }}>
