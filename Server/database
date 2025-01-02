@@ -72,9 +72,3 @@ CREATE TABLE tbl_messages (
     FOREIGN KEY (sender_id) REFERENCES tbl_accounts(user_id)
 );
 
--- Table: tbl_images
-CREATE TABLE tbl_images (
-    image_collection_id VARCHAR(255) PRIMARY KEY,
-    image_collection VARCHAR(255) NOT NULL COMMENT 'Messages = MSG , Comments = COM, Posts = POS ; Format: Type+TIMESTAMP :POS-000001',
-    image VARCHAR(255) NOT NULL
-);
