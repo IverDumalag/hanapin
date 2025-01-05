@@ -11,6 +11,8 @@ const UserProfile = () => {
    const [posts, setPosts] = useState([]);
    const [editProfile, setEditProfile] = useState(false);
    const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+   const [postToDelete, setPostToDelete] = useState(null);
    const [error, setError] = useState(null);
    const [filterCriteria, setFilterCriteria] = useState({ barangay: '', month: '', year: '' });
    const [searchQuery, setSearchQuery] = useState('');
@@ -65,14 +67,19 @@ const UserProfile = () => {
       }
    };
 
-   const handleDeletePost = async (postId) => {
+   const handleDeletePost = (postId) => {
+      setPostToDelete(postId);
+      setDeleteDialogOpen(true);
+   };
+
+   const confirmDeletePost = async () => {
       try {
-         const response = await fetch(`http://localhost/hanapin/Client/hanapin_backend/api/deleteUserPost.php`, {
+         const response = await fetch(`http://localhost/hanapin/Client/hanapin_backend/api/deletePost.php`, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ post_id: postId }),
+            body: JSON.stringify({ post_id: postToDelete }),
          });
 
          if (response.ok) {
@@ -85,6 +92,9 @@ const UserProfile = () => {
          }
       } catch (error) {
          console.error('Error deleting post:', error);
+      } finally {
+         setDeleteDialogOpen(false);
+         setPostToDelete(null);
       }
    };
 
@@ -146,6 +156,13 @@ const UserProfile = () => {
       }
    };
 
+   const handleDeleteDialogClose = (confirmed) => {
+      setDeleteDialogOpen(false);
+      if (confirmed) {
+         confirmDeletePost();
+      }
+   };
+
    const googlePickerAccessToken = import.meta.env.VITE_GOOGLE_PICKER_ACCESS_TOKEN;
    const googleDriveFolderId = import.meta.env.VITE_GOOGLE_PICKER_FOLDER_ID;
 
@@ -189,6 +206,152 @@ const UserProfile = () => {
          }
       }
    };
+
+      const [comments, setComments] = useState([]);
+      const [commentModalOpen, setCommentModalOpen] = useState(false);
+      const [selectedPostId, setSelectedPostId] = useState(null);
+      const [newComment, setNewComment] = useState('');
+   
+      const handleOpenCommentModal = (postId) => {
+         setSelectedPostId(postId);
+         fetchComments(postId);
+         setCommentModalOpen(true);
+      };
+   
+      const handleCloseCommentModal = () => {
+         setCommentModalOpen(false);
+         setComments([]);
+         setNewComment('');
+         setFileUrl('');
+      };
+   
+      const fetchComments = async (postId) => {
+         try {
+            const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/readPostComment.php', {
+               method: 'POST',
+               headers: {
+                  'Content-Type': 'application/json',
+               },
+               body: JSON.stringify({ post_id: postId }),
+            });
+            const data = await response.json();
+            if (response.ok) {
+               setComments(data.comments);
+            } else {
+               console.error(data.message);
+            }
+         } catch (error) {
+            console.error('Failed to fetch comments:', error);
+         }
+      };
+   
+      const handlePostComment = async () => {
+         if (!newComment.trim()&& !fileUrl) return;
+   
+         const commentData = {
+            post_id: selectedPostId,
+            user_id: userData.user_id,
+            comment: newComment,
+            comment_image: fileUrl, 
+         };
+   
+         try {
+            console.log(commentData);
+            const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/createPostComment.php', {
+               method: 'POST',
+               headers: {
+                  'Content-Type': 'application/json',
+               },
+               body: JSON.stringify(commentData),
+            });
+   
+            if (response.ok) {
+               fetchComments(selectedPostId);
+               setNewComment('');
+               setFileUrl('');
+            } else {
+               const error = await response.json();
+               console.error(error.message);
+            }
+         } catch (error) {
+            console.error('Error posting comment:', error);
+         }
+      };
+
+   const [fileUrl, setFileUrl] = useState('');
+
+   const handleCommentFileChange = async (e) => {
+      const file = e.target.files[0];
+      if (file) {
+         const metadata = {
+            name: file.name,
+            parents: [googleDriveFolderId],
+         };
+
+         const formData = new FormData();
+         formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+         formData.append('file', file);
+
+         try {
+            const response = await axios.post(
+               `https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart`,
+               formData,
+               {
+                  headers: {
+                     Authorization: `Bearer ${googlePickerAccessToken}`,
+                     'Content-Type': 'multipart/related',
+                  },
+               }
+            );
+
+            const fileId = response.data.id;
+            const directUrl = `https://drive.google.com/thumbnail?id=${fileId}`;
+
+            setFileUrl(directUrl);
+         } catch (error) {
+            console.error('Error uploading file to Google Drive:', error);
+         }
+      }
+   };
+
+   const onFound = async (postId) => {
+      try {
+         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/updatePostToFound.php', {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ post_id: postId }),
+         });
+
+         if (response.ok) {
+            const result = await response.json();
+            console.log(result.message);
+            fetchPosts();
+         } else {
+            const error = await response.json();
+            console.error(error.message);
+         }
+      } catch (error) {
+         console.error('Error updating post to FOUND:', error);
+      }
+   };
+
+   const [confirmFoundDialogOpen, setFoundConfirmDialogOpen] = useState(false);
+   
+   const handleFoundConfirmDialogOpen = (postId) => {
+      setSelectedPostId(postId);
+      setFoundConfirmDialogOpen(true);
+   };
+   
+   const handleFoundConfirmDialogClose = async (isConfirmed) => {
+      setFoundConfirmDialogOpen(false);
+      if (isConfirmed && selectedPostId !== null) {
+         await onFound(selectedPostId);
+         setSelectedPostId(null);
+      }
+   };
+   
 
    return (
       <>
@@ -262,7 +425,7 @@ const UserProfile = () => {
                      <Box sx={{ mt: 2 }}>
                         {filteredPosts.length > 0 ? (
                            filteredPosts.map((post, index) => (
-                              <PostContent key={index} {...post} onDelete={handleDeletePost} />
+                              <PostContent key={index} {...post} onDelete={handleDeletePost} onCommentClick={handleOpenCommentModal} onFound={handleFoundConfirmDialogOpen}/>
                            ))
                         ) : (
                            <Typography variant="h6" align="center">
@@ -436,11 +599,114 @@ const UserProfile = () => {
                </Button>
             </DialogActions>
          </Dialog>
+
+         <Dialog
+            open={deleteDialogOpen}
+            onClose={() => handleDeleteDialogClose(false)}
+         >
+            <DialogTitle>Confirm Delete</DialogTitle>
+            <DialogContent>
+               <DialogContentText>
+                  Are you sure you want to delete this post?
+               </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+               <Button onClick={() => handleDeleteDialogClose(false)} color="secondary">
+                  Cancel
+               </Button>
+               <Button onClick={() => handleDeleteDialogClose(true)} color="primary">
+                  Confirm
+               </Button>
+            </DialogActions>
+         </Dialog>
+
+         <Modal open={commentModalOpen} onClose={handleCloseCommentModal}>
+            <Box sx={{ ...modalStyle, width: 900 }}>
+               <Typography variant="h6">Comments</Typography>
+                  <Box sx={{ maxHeight: 400, overflowY: 'auto', mt: 2 }}>
+                     {comments.length > 0 ? (
+                     comments.map((comment, index) => (
+                     <Box key={index} sx={{ mb: 2 }}>
+                     <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                        {comment.first_name} {comment.last_name}
+                     </Typography>
+                        {comment.comment_image && (
+                           <Box
+                              component="img"
+                              src={comment.comment_image.replace('uc', 'thumbnail')}
+                              alt="Message Image"
+                              sx={{ maxWidth: '100%', maxHeight: 200, marginTop: 1 }}
+                           />
+                           )}
+                           <Typography variant="body2">{comment.comment}</Typography>
+                           <Typography variant="caption" color="textSecondary">
+                              {new Date(comment.comment_date).toLocaleString()}
+                           </Typography>
+                           </Box>
+                           ))
+                           ) : (
+                           <Typography variant="body2" align="center">
+                              No comments yet.
+                           </Typography>
+                           )}
+                     </Box>
+                  <TextField
+                     fullWidth
+                     variant="outlined"
+                     size="small"
+                     value={newComment}
+                     onChange={(e) => setNewComment(e.target.value)}
+                     placeholder="Write a comment..."
+                     sx={{ mt: 2 }}
+                  />
+               <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+               {fileUrl && (
+                <Box
+                   component="img"
+                  src={fileUrl}
+                  alt="Selected File"
+                  sx={{ maxWidth: '100%', maxHeight: 100, marginBottom: 2 , marginTop: 2}}
+               />
+               )}
+               </Box>
+               <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>            
+                  <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                     <Button variant="contained" component="label">
+                        Add File
+                     <input type="file" hidden onChange={handleCommentFileChange} />
+                     </Button>
+                  </Box>
+                  <Button variant="contained" color="primary" onClick={handlePostComment}>
+                     Post Comment
+                  </Button>
+               </Box>
+            </Box>
+         </Modal>
+
+         <Dialog
+            open={confirmFoundDialogOpen}
+            onClose={() => handleFoundConfirmDialogClose(false)}
+         >
+            <DialogTitle>Confirm Action</DialogTitle>
+            <DialogContent>
+               <DialogContentText>
+                  Are you sure you want to mark this post as "Found"?
+               </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+               <Button onClick={() => handleFoundConfirmDialogClose(false)} color="secondary">
+                  Cancel
+               </Button>
+               <Button onClick={() => handleFoundConfirmDialogClose(true)} color="primary">
+                  Confirm
+               </Button>
+            </DialogActions>
+         </Dialog>
       </>
    );
 };
 
-const PostContent = ({ profile_pic, first_name, last_name, content_text, content_picture, post_date, post_id, onDelete }) => {
+const PostContent = ({ profile_pic, first_name, last_name, content_text, content_picture, last_street, last_subdivision, last_barangay, content_state, post_date, user_id, post_id, onProfileClick, onCommentClick, onDelete, onFound}) => {
    return (
       <Box
          sx={{
@@ -455,33 +721,50 @@ const PostContent = ({ profile_pic, first_name, last_name, content_text, content
             <img
                src={profile_pic || 'https://via.placeholder.com/50'}
                alt="Profile"
-               style={{ width: 50, height: 50, borderRadius: '50%' }}
+               style={{ width: 50, height: 50, borderRadius: '50%', cursor: 'pointer' }}
+               onClick={() => onProfileClick(user_id)}
             />
-            <Typography variant="h6">{`${first_name || ''} ${last_name || ''}`.trim()}</Typography>
+            <Typography
+               variant="h6"
+               sx={{ cursor: 'pointer' }}
+               onClick={() => onProfileClick(user_id)}
+            >
+               {`${first_name || ''} ${last_name || ''}`.trim()}
+            </Typography>
          </Box>
-
+         
          <Box sx={{ mt: 2 }}>
+            <Typography variant="body1">Status: {content_state}</Typography>
             <Typography variant="body1">{content_text}</Typography>
          </Box>
          {content_picture && (
             <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
                <img
-                  src={content_picture}
-                  alt="Post Content"
-                  style={{ borderRadius: 2, width: '100%', height: 'auto' }}
+                  src={content_picture.replace('uc', 'thumbnail')}
+                  alt="Post Content Thumbnail"
+                  style={{ borderRadius: 2, width: '100%', height: 'auto', cursor: 'pointer' }}
+                  onClick={() => window.open(content_picture.replace('thumbnail', 'uc'), '_blank', 'noopener,noreferrer')}
                />
             </Box>
          )}
 
          <Box sx={{ mt: 2 }}>
-            <Typography variant="body2">Posted on: {new Date(post_date).toLocaleString()}</Typography>
+            <Typography variant="body2">
+               Last seen at: {last_street ? `${last_street}, ` : ''}{last_subdivision}, {last_barangay}
+            </Typography>
+            <Typography variant="body2">
+               Posted on: {new Date(post_date).toLocaleString()}
+            </Typography>
          </Box>
          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={() => onCommentClick(post_id)}>
                Comment
             </Button>
             <Button variant="outlined" color="secondary" onClick={() => onDelete(post_id)}>
                Delete
+            </Button>
+            <Button variant="outlined" color="secondary" onClick={() => onFound(post_id)}>
+               Set To Found
             </Button>
          </Box>
       </Box>
