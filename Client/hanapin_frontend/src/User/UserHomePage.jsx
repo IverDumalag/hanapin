@@ -199,84 +199,179 @@ const UserHomePage = () => {
       navigate(`/user_otherprofile`);
    };
 
+   const [comments, setComments] = useState([]);
+   const [commentModalOpen, setCommentModalOpen] = useState(false);
+   const [selectedPostId, setSelectedPostId] = useState(null);
+   const [newComment, setNewComment] = useState('');
+
+   const handleOpenCommentModal = (postId) => {
+      setSelectedPostId(postId);
+      fetchComments(postId);
+      setCommentModalOpen(true);
+   };
+
+   const handleCloseCommentModal = () => {
+      setCommentModalOpen(false);
+      setComments([]);
+      setNewComment('');
+      setFileUrl('');
+   };
+
+   const fetchComments = async (postId) => {
+      try {
+         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/readPostComment.php', {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ post_id: postId }),
+         });
+         const data = await response.json();
+         if (response.ok) {
+            setComments(data.comments);
+         } else {
+            console.error(data.message);
+         }
+      } catch (error) {
+         console.error('Failed to fetch comments:', error);
+      }
+   };
+
+   const handlePostComment = async () => {
+      if (!newComment.trim()&& !fileUrl) return;
+
+      const commentData = {
+         post_id: selectedPostId,
+         user_id: userData.user_id,
+         comment: newComment,
+         comment_image: fileUrl, 
+      };
+
+      try {
+         console.log(commentData);
+         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/createPostComment.php', {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(commentData),
+         });
+
+         if (response.ok) {
+            fetchComments(selectedPostId);
+            setNewComment('');
+            setFileUrl('');
+         } else {
+            const error = await response.json();
+            console.error(error.message);
+         }
+      } catch (error) {
+         console.error('Error posting comment:', error);
+      }
+   };
+
+   const [fileUrl, setFileUrl] = useState('');
+
+
+   const handleCommentFileChange = async (e) => {
+      const file = e.target.files[0];
+      if (file) {
+         const metadata = {
+            name: file.name,
+            parents: [googleDriveFolderId],
+         };
+
+         const formData = new FormData();
+         formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+         formData.append('file', file);
+
+         try {
+            const response = await axios.post(
+               `https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart`,
+               formData,
+               {
+                  headers: {
+                     Authorization: `Bearer ${googlePickerAccessToken}`,
+                     'Content-Type': 'multipart/related',
+                  },
+               }
+            );
+
+            const fileId = response.data.id;
+            const directUrl = `https://drive.google.com/thumbnail?id=${fileId}`;
+
+            setFileUrl(directUrl);
+         } catch (error) {
+            console.error('Error uploading file to Google Drive:', error);
+         }
+      }
+   };
+
+
    return (
       <>
-         <Box sx={{ bgcolor: 'lightgrey', minHeight: '100vh' }}>
-            <UserToolBar onSearch={handleSearch} />
-            <Box sx={{ marginTop: '64px', display: 'flex' }}>
-               <UserFilterBar onFilter={handleFilter} />
+      <Box sx={{ bgcolor: 'lightgrey', minHeight: '100vh' }}>
+         <UserToolBar onSearch={handleSearch} />
+         <Box sx={{ marginTop: '64px', display: 'flex' }}>
+            <UserFilterBar onFilter={handleFilter} />
+            <Box
+               sx={{
+                  flex: 1,
+                  padding: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+               }}
+            >
                <Box
+                  width="70%"
                   sx={{
-                     flex: 1,
-                     padding: 2,
-                     display: 'flex',
-                     alignItems: 'center',
-                     justifyContent: 'center',
+                     bgcolor: 'lightgrey',
+                     borderRadius: 3,
+                     boxShadow: 2,
+                     p: 3,
                   }}
                >
                   <Box
-                     width="70%"
                      sx={{
-                        bgcolor: 'lightgrey',
-                        borderRadius: 3,
-                        boxShadow: 2,
-                        p: 3,
+                        p: 2,
+                        border: '1px solid #e0e0e0',
+                        bgcolor: 'white',
+                        borderRadius: 2,
                      }}
                   >
-                     <Box
-                        sx={{
-                           p: 2,
-                           border: '1px solid #e0e0e0',
-                           bgcolor: 'white',
-                           borderRadius: 2,
-                        }}
-                     >
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                           <img
-                              src={
-                                 userData?.profile_pic ||
-                                 'https://via.placeholder.com/40'
-                              }
-                              alt="Profile"
-                              style={{
-                                 width: 50,
-                                 height: 50,
-                                 borderRadius: '50%',
-                                 cursor: 'pointer',
-                              }}
-                              onClick={() => navigate(`/user_otherprofile?user_id=${userData.user_id}`)}
-                           />
-                           <TextField
-                              fullWidth
-                              placeholder="What's on your mind?"
-                              variant="outlined"
-                              size="small"
-                              InputProps={{
-                                 readOnly: true,
-                              }}
-                              sx={{
-                                 backgroundColor: '#f5f5f5',
-                                 borderRadius: 2,
-                                 '.MuiOutlinedInput-notchedOutline': {
-                                    border: 'none',
-                                 },
-                              }}
-                           />
-                        </Box>
-                        <Box
-                           sx={{
-                              display: 'flex',
-                              justifyContent: 'space-around',
-                              mt: 2,
+                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <img
+                           src={
+                              userData?.profile_pic ||
+                              'https://via.placeholder.com/40'
+                           }
+                           alt="Profile"
+                           style={{
+                              width: 50,
+                              height: 50,
+                              borderRadius: '50%',
+                              cursor: 'pointer',
                            }}
-                        >
-                           <Button variant="contained" color="primary" onClick={handleOpen}>
-                              Create Post
-                           </Button>
-                        </Box>
+                           onClick={() => handleProfileClick(userData.user_id)}
+                        />
+                        <TextField
+                           fullWidth
+                           placeholder="What's on your mind?"
+                           variant="outlined"
+                           size="small"
+                           InputProps={{
+                              readOnly: true,
+                           }}
+                           sx={{
+                              backgroundColor: '#f5f5f5',
+                              borderRadius: 2,
+                              '.MuiOutlinedInput-notchedOutline': {
+                                 border: 'none',
+                              },
+                           }}
+                        />
                      </Box>
-
-                     {/* Missing Found Section */}
                      <Box
                         sx={{
                            display: 'flex',
@@ -284,95 +379,172 @@ const UserHomePage = () => {
                            mt: 2,
                         }}
                      >
-                        <Button variant="text" color="primary" onClick={() => setFilter('MISSING')}>
-                           Missing
+                        <Button variant="contained" color="primary" onClick={handleOpen}>
+                           Create Post
                         </Button>
-                        
-                        <Button variant="text" color="primary" onClick={() => setFilter('ALL')}>
-                           All
-                        </Button>
-
-                        <Button variant="text" color="primary" onClick={() => setFilter('FOUND')}>
-                           Found
-                        </Button>
-                     </Box>
-
-                     {/* Post Content */}
-                     <Box sx={{ mt: 2 }}>
-                        {filteredPosts.length > 0 ? (
-                           filteredPosts.map((post, index) => (
-                              <PostContent key={index} {...post} onProfileClick={handleProfileClick} />
-                           ))
-                        ) : (
-                           <Typography variant="h6" align="center">
-                              No Result Found :{`<`}
-                           </Typography>
-                        )}
                      </Box>
                   </Box>
+
+                  {/* Missing Found Section */}
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        justifyContent: 'space-around',
+                        mt: 2,
+                     }}
+                  >
+                     <Button variant="text" color="primary" onClick={() => setFilter('MISSING')}>
+                        Missing
+                     </Button>
+                     
+                     <Button variant="text" color="primary" onClick={() => setFilter('ALL')}>
+                        All
+                     </Button>
+
+                     <Button variant="text" color="primary" onClick={() => setFilter('FOUND')}>
+                        Found
+                     </Button>
+                  </Box>
+
+                  {/* Post Content */}
+                  <Box sx={{ mt: 2 }}>
+                     {filteredPosts.length > 0 ? (
+                        filteredPosts.map((post, index) => (
+                           <PostContent key={index} {...post} onProfileClick={handleProfileClick} onCommentClick={handleOpenCommentModal} />
+                        ))
+                     ) : (
+                        <Typography variant="h6" align="center">
+                           No Result Found :{`<`}
+                        </Typography>
+                     )}
+                  </Box>
                </Box>
-               <UserMessagePreview />
+            </Box>
+            <UserMessagePreview />
+         </Box>
+      </Box>
+
+      <Modal open={open} onClose={handleClose}>
+         <Box sx={{ ...modalStyle }}>
+            <Typography variant="h6">Create a New Post</Typography>
+            <TextField
+               fullWidth
+               label="Content"
+               variant="outlined"
+               size="small"
+               value={newPost.content}
+               onChange={(e) => setNewPost({ ...newPost, content: e.target.value })}
+               sx={{ mt: 2 }}
+            />
+            <div>
+               <label>Content Picture</label>
+               {newPost.contentPic && (
+                  <div>
+                     <img
+                        src={newPost.contentPic}
+                        alt="Selected Content"
+                        style={{ width: '100%' }}
+                     />
+                  </div>
+               )}
+               <input type="file" onChange={handleFileChange} />
+            </div>
+            <TextField
+               fullWidth
+               label="Last Street"
+               variant="outlined"
+               size="small"
+               value={newPost.lastStreet}
+               onChange={(e) => setNewPost({ ...newPost, lastStreet: e.target.value })}
+               sx={{ mt: 2 }}
+            />
+            <TextField
+               fullWidth
+               label="Last Subdivision"
+               variant="outlined"
+               size="small"
+               value={newPost.lastSubdivision}
+               onChange={(e) => setNewPost({ ...newPost, lastSubdivision: e.target.value })}
+               sx={{ mt: 2 }}
+            />
+            <TextField
+               fullWidth
+               label="Last Barangay"
+               variant="outlined"
+               size="small"
+               value={newPost.lastBarangay}
+               onChange={(e) => setNewPost({ ...newPost, lastBarangay: e.target.value })}
+               sx={{ mt: 2 }}
+            />
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+               <Button variant="contained" color="primary" onClick={handleCreatePost} disabled={isCreatePostDisabled}>
+                  Create
+               </Button>
+               <Button variant="outlined" color="secondary" onClick={handleClose}>
+                  Cancel
+               </Button>
             </Box>
          </Box>
-
-         <Modal open={open} onClose={handleClose}>
-            <Box sx={{ ...modalStyle }}>
-               <Typography variant="h6">Create a New Post</Typography>
-               <TextField
-                  fullWidth
-                  label="Content"
-                  variant="outlined"
-                  size="small"
-                  value={newPost.content}
-                  onChange={(e) => setNewPost({ ...newPost, content: e.target.value })}
-                  sx={{ mt: 2 }}
-               />
-               <div>
-                  <label>Content Picture</label>
-                  {newPost.contentPic && (
-                     <div>
-                        <img
-                           src={newPost.contentPic}
-                           alt="Selected Content"
-                           style={{ width: '100%' }}
-                        />
-                     </div>
+      </Modal>
+      <Modal open={commentModalOpen} onClose={handleCloseCommentModal}>
+            <Box sx={{ ...modalStyle, width: 900 }}>
+               <Typography variant="h6">Comments</Typography>
+               <Box sx={{ maxHeight: 400, overflowY: 'auto', mt: 2 }}>
+                  {comments.length > 0 ? (
+                     comments.map((comment, index) => (
+                        <Box key={index} sx={{ mb: 2 }}>
+                           <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                              {comment.first_name} {comment.last_name}
+                           </Typography>
+                           {comment.comment_image && (
+                              <Box
+                              component="img"
+                              src={comment.comment_image.replace('uc', 'thumbnail')}
+                              alt="Message Image"
+                              sx={{ maxWidth: '100%', maxHeight: 200, marginTop: 1 }}
+                              />
+                           )}
+                           <Typography variant="body2">{comment.comment}</Typography>
+                           <Typography variant="caption" color="textSecondary">
+                              {new Date(comment.comment_date).toLocaleString()}
+                           </Typography>
+                        </Box>
+                     ))
+                  ) : (
+                     <Typography variant="body2" align="center">
+                        No comments yet.
+                     </Typography>
                   )}
-                  <input type="file" onChange={handleFileChange} />
-               </div>
+               </Box>
                <TextField
                   fullWidth
-                  label="Last Street"
                   variant="outlined"
                   size="small"
-                  value={newPost.lastStreet}
-                  onChange={(e) => setNewPost({ ...newPost, lastStreet: e.target.value })}
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  placeholder="Write a comment..."
                   sx={{ mt: 2 }}
                />
-               <TextField
-                  fullWidth
-                  label="Last Subdivision"
-                  variant="outlined"
-                  size="small"
-                  value={newPost.lastSubdivision}
-                  onChange={(e) => setNewPost({ ...newPost, lastSubdivision: e.target.value })}
-                  sx={{ mt: 2 }}
-               />
-               <TextField
-                  fullWidth
-                  label="Last Barangay"
-                  variant="outlined"
-                  size="small"
-                  value={newPost.lastBarangay}
-                  onChange={(e) => setNewPost({ ...newPost, lastBarangay: e.target.value })}
-                  sx={{ mt: 2 }}
-               />
-               <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-                  <Button variant="contained" color="primary" onClick={handleCreatePost}>
-                     Create
-                  </Button>
-                  <Button variant="outlined" color="secondary" onClick={handleClose}>
-                     Cancel
+               <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                  {fileUrl && (
+                     <Box
+                        component="img"
+                        src={fileUrl}
+                        alt="Selected File"
+                        sx={{ maxWidth: '100%', maxHeight: 100, marginBottom: 2 , marginTop: 2}}
+                     />
+                     )}
+                     </Box>
+               <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+                  
+                  <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                     <Button variant="contained" component="label">
+                        Add File
+                     <input type="file" hidden onChange={handleCommentFileChange} />
+                     </Button>
+                  </Box>
+                  <Button variant="contained" color="primary" onClick={handlePostComment}>
+                     Post Comment
                   </Button>
                </Box>
             </Box>
@@ -381,7 +553,7 @@ const UserHomePage = () => {
    );
 };
 
-const PostContent = ({ profile_pic, first_name, last_name, content_text, content_picture, last_street, last_subdivision, last_barangay, content_state, post_date, user_id, onProfileClick }) => {
+const PostContent = ({ profile_pic, first_name, last_name, content_text, content_picture, last_street, last_subdivision, last_barangay, content_state, post_date, user_id, post_id, onProfileClick, onCommentClick }) => {
    return (
       <Box
          sx={{
@@ -432,7 +604,7 @@ const PostContent = ({ profile_pic, first_name, last_name, content_text, content
             </Typography>
          </Box>
          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={() => onCommentClick(post_id)}>
                Comment
             </Button>
          </Box>
