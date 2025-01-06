@@ -1,0 +1,45 @@
+.post-welcome-admin {
+   padding: 0px;
+   margin-left: 0px;
+}
+
+.admin-post-management-table {
+   width: 100%;
+   border-collapse: collapse;
+}
+
+.admin-post-management-table th,
+.admin-post-management-table td {
+   border: 1px solid #ddd;
+   padding: 10px;
+}
+
+.admin-post-management-table th {
+   background-color: #f2f2f2;
+   text-align: left;
+}
+
+.admin-post-management-table tr:nth-child(even) {
+   background-color: #f9f9f9;
+}
+
+.admin-post-management-table tr:hover {
+   background-color: #ddd;
+}
+
+.modal-box {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   background-color: white;
+   border: 2px solid #000;
+   box-shadow: 24px;
+   padding: 16px;
+   width: 600px;
+}
+
+.post-content-image {
+   width: 100%;
+   margin-top: 10px;
+}
