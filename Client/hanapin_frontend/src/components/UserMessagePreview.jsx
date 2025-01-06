@@ -115,7 +115,7 @@ const UserMessagePreview = () => {
             width: 240,
             flexShrink: 0,
             [`& .MuiDrawer-paper`]: {
-               width: 240,
+               width: 290,
                marginTop: '64px',
                boxSizing: 'border-box',
                zIndex: 1,
@@ -129,6 +129,8 @@ const UserMessagePreview = () => {
                fullWidth
                value={searchQuery}
                onChange={handleSearchChange}
+
+               sx={{ boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', borderRadius: '5px', width:'100%' }}
             />
          </Box>
          <Box sx={{ overflow: 'auto' }}>
