@@ -83,6 +83,7 @@ export default function PrimarySearchAppBar({ children, onSearch }) {
                      width: '20%',
                      bgcolor: '#FFFFFF',
                      borderRadius: '5px',
+                     boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
                      '& .MuiOutlinedInput-root': {
                         '& fieldset': {
                         borderColor: '#AFB0CE', // Default border

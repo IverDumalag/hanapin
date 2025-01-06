@@ -321,7 +321,7 @@ const UserHomePage = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  backgroundColor: 'green',
+                  backgroundColor: 'lightgrey',
                }}
             >
                <Box
@@ -331,11 +331,11 @@ const UserHomePage = () => {
                      borderRadius: 3,
                      boxShadow: 2,
                      p: 3,
-                     backgroundColor: 'blue',
+                     backgroundColor: 'white',
                   }}
                >
                   <Box>
-                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 , backgroundColor: 'yellow'}}>
+                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 , backgroundColor: 'white'}}>
                         <img
                            src={
                               userData?.profile_pic ||
@@ -356,15 +356,23 @@ const UserHomePage = () => {
                            display: 'flex',
                            justifyContent: 'space-around',
                            mt: 2,
-                           backgroundColor: 'purple',
+                           backgroundColor: 'white',
                         }}
                      >
                         <Button
                            className="create-post-button"
                            variant="contained"
                            onClick={handleOpen}
-                           >
-                           Create Post
+                           sx={{
+                              backgroundColor: '#AFB0CE',
+                              padding: '10px 20px',
+                              minWidth: '325px',
+                              color: 'white',
+                              fontSize: '18px', 
+                              textTransform: 'none'
+                           }}
+                        >
+                           Create a Post
                         </Button>
                      </Box>
                   </Box>
@@ -373,26 +381,58 @@ const UserHomePage = () => {
                   <Box
                      sx={{
                         display: 'flex',
-                        justifyContent: 'space-around',
+                        justifyContent: 'space-evenly',
                         mt: 2,
-                        backgroundColor: 'lightgrey',
+                        width: '100%',
+                        backgroundColor: 'white',
                      }}
                   >
-                     <Button variant="text" color="primary" onClick={() => setFilter('MISSING')}>
+                     <Button
+                        variant="contained"
+                        color="dark"
+                        onClick={() => setFilter('MISSING')}
+                        sx={{
+                           minWidth: '325px', // Adjust this value to widen the button
+                           padding: '10px 20px', 
+                           borderRadius: '5px',
+                           bgcolor: '#BA96DD'
+                        }}
+                     >
                         Missing
                      </Button>
-                     
-                     <Button variant="text" color="primary" onClick={() => setFilter('ALL')}>
+
+                     <Button
+                        variant="contained"
+                        color="dark"
+                        onClick={() => setFilter('ALL')}
+                        sx={{
+                           minWidth: '325px', // Adjust this value to widen the button
+                           padding: '10px 20px', 
+                           borderRadius: '5px',
+                           bgcolor: '#AFB0CE'
+                        }}
+                     >
                         All
                      </Button>
 
-                     <Button variant="text" color="primary" onClick={() => setFilter('FOUND')}>
+                     <Button
+                        variant="contained"
+                        color="dark"
+                        onClick={() => setFilter('FOUND')}
+                        sx={{
+                           minWidth: '325px', // Adjust this value to widen the button
+                           padding: '10px 20px', 
+                           borderRadius: '5px',
+                           bgcolor: '#F0D5E3'                          
+                        }}
+                     >
                         Found
-                     </Button>
+                     </Button>         
+                  
                   </Box>
 
                   {/* Post Content */}
-                  <Box sx={{ mt: 2 , backgroundColor: 'orange'}}>
+                  <Box sx={{ mt: 2 , backgroundColor: 'white'}}>
                      {filteredPosts.length > 0 ? (
                         filteredPosts.map((post, index) => (
                            <div
@@ -401,7 +441,7 @@ const UserHomePage = () => {
                                  marginTop: '16px',
                                  padding: '16px',
                                  border: '1px solid #e0e0e0',
-                                 backgroundColor: 'red',
+                                 backgroundColor: '#F4E9FF',
                                  borderRadius: '8px',
                               }}
                            >
@@ -422,7 +462,7 @@ const UserHomePage = () => {
                               </div>
                               
                               <div style={{ marginTop: '16px' }}>
-                                 <Typography variant="body1">Status: {post.content_state}</Typography>
+                                 <Typography variant="body1">S: {post.content_state}</Typography><br></br>
                                  <Typography variant="body1">{post.content_text}</Typography>
                               </div>
                               {post.content_picture && (
@@ -561,7 +601,7 @@ const UserHomePage = () => {
                   size="small"
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
-                  placeholder="Write a comment..."
+                  placeholder="Write a comment.."
                   sx={{ mt: 2 }}
                />
                <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
