@@ -324,22 +324,15 @@ const UserHomePage = () => {
                }}
             >
                <Box
-                  width="70%"
+                  width="85%"
                   sx={{
-                     bgcolor: 'lightgrey',
+                     bgcolor: 'white',
                      borderRadius: 3,
                      boxShadow: 2,
                      p: 3,
                   }}
                >
-                  <Box
-                     sx={{
-                        p: 2,
-                        border: '1px solid #e0e0e0',
-                        bgcolor: 'white',
-                        borderRadius: 2,
-                     }}
-                  >
+                  <Box>
                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                         <img
                            src={
@@ -355,22 +348,6 @@ const UserHomePage = () => {
                            }}
                            onClick={() => handleProfileClick(userData.user_id)}
                         />
-                        <TextField
-                           fullWidth
-                           placeholder="What's on your mind?"
-                           variant="outlined"
-                           size="small"
-                           InputProps={{
-                              readOnly: true,
-                           }}
-                           sx={{
-                              backgroundColor: '#f5f5f5',
-                              borderRadius: 2,
-                              '.MuiOutlinedInput-notchedOutline': {
-                                 border: 'none',
-                              },
-                           }}
-                        />
                      </Box>
                      <Box
                         sx={{
@@ -379,7 +356,11 @@ const UserHomePage = () => {
                            mt: 2,
                         }}
                      >
-                        <Button variant="contained" color="primary" onClick={handleOpen}>
+                        <Button
+                           className="create-post-button"
+                           variant="contained"
+                           onClick={handleOpen}
+                           >
                            Create Post
                         </Button>
                      </Box>
@@ -410,11 +391,65 @@ const UserHomePage = () => {
                   <Box sx={{ mt: 2 }}>
                      {filteredPosts.length > 0 ? (
                         filteredPosts.map((post, index) => (
-                           <PostContent key={index} {...post} onProfileClick={handleProfileClick} onCommentClick={handleOpenCommentModal} />
+                           <div
+                              key={index}
+                              style={{
+                                 marginTop: '16px',
+                                 padding: '16px',
+                                 border: '1px solid #e0e0e0',
+                                 backgroundColor: 'white',
+                                 borderRadius: '8px',
+                              }}
+                           >
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                 <img
+                                    src={post.profile_pic || 'https://via.placeholder.com/50'}
+                                    alt="Profile"
+                                    style={{ width: 50, height: 50, borderRadius: '50%', cursor: 'pointer' }}
+                                    onClick={() => handleProfileClick(post.user_id)}
+                                 />
+                                 <Typography
+                                    variant="h6"
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => handleProfileClick(post.user_id)}
+                                 >
+                                    {`${post.first_name || ''} ${post.last_name || ''}`.trim()}
+                                 </Typography>
+                              </div>
+                              
+                              <div style={{ marginTop: '16px' }}>
+                                 <Typography variant="body1">Status: {post.content_state}</Typography>
+                                 <Typography variant="body1">{post.content_text}</Typography>
+                              </div>
+                              {post.content_picture && (
+                                 <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'center' }}>
+                                    <img
+                                       src={post.content_picture.replace('uc', 'thumbnail')}
+                                       alt="Post Content Thumbnail"
+                                       style={{ borderRadius: '8px', width: '100%', height: 'auto', cursor: 'pointer' }}
+                                       onClick={() => window.open(post.content_picture.replace('thumbnail', 'uc'), '_blank', 'noopener,noreferrer')}
+                                    />
+                                 </div>
+                              )}
+
+                              <div style={{ marginTop: '16px' }}>
+                                 <Typography variant="body2">
+                                    Last seen at: {post.last_street ? `${post.last_street}, ` : ''}{post.last_subdivision}, {post.last_barangay}
+                                 </Typography>
+                                 <Typography variant="body2">
+                                    Posted on: {new Date(post.post_date).toLocaleString()}
+                                 </Typography>
+                              </div>
+                              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
+                                 <Button variant="contained" color="primary" onClick={() => handleOpenCommentModal(post.post_id)}>
+                                    Comment
+                                 </Button>
+                              </div>
+                           </div>
                         ))
                      ) : (
                         <Typography variant="h6" align="center">
-                           No Result Found :{`<`}
+                           No Result Found :{`(`}
                         </Typography>
                      )}
                   </Box>
@@ -550,65 +585,6 @@ const UserHomePage = () => {
             </Box>
          </Modal>
       </>
-   );
-};
-
-const PostContent = ({ profile_pic, first_name, last_name, content_text, content_picture, last_street, last_subdivision, last_barangay, content_state, post_date, user_id, post_id, onProfileClick, onCommentClick }) => {
-   return (
-      <Box
-         sx={{
-            mt: 4,
-            p: 2,
-            border: '1px solid #e0e0e0',
-            bgcolor: 'white',
-            borderRadius: 2,
-         }}
-      >
-         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <img
-               src={profile_pic || 'https://via.placeholder.com/50'}
-               alt="Profile"
-               style={{ width: 50, height: 50, borderRadius: '50%', cursor: 'pointer' }}
-               onClick={() => onProfileClick(user_id)}
-            />
-            <Typography
-               variant="h6"
-               sx={{ cursor: 'pointer' }}
-               onClick={() => onProfileClick(user_id)}
-            >
-               {`${first_name || ''} ${last_name || ''}`.trim()}
-            </Typography>
-         </Box>
-         
-         <Box sx={{ mt: 2 }}>
-            <Typography variant="body1">Status: {content_state}</Typography>
-            <Typography variant="body1">{content_text}</Typography>
-         </Box>
-         {content_picture && (
-            <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
-               <img
-                  src={content_picture.replace('uc', 'thumbnail')}
-                  alt="Post Content Thumbnail"
-                  style={{ borderRadius: 2, width: '100%', height: 'auto', cursor: 'pointer' }}
-                  onClick={() => window.open(content_picture.replace('thumbnail', 'uc'), '_blank', 'noopener,noreferrer')}
-               />
-            </Box>
-         )}
-
-         <Box sx={{ mt: 2 }}>
-            <Typography variant="body2">
-               Last seen at: {last_street ? `${last_street}, ` : ''}{last_subdivision}, {last_barangay}
-            </Typography>
-            <Typography variant="body2">
-               Posted on: {new Date(post_date).toLocaleString()}
-            </Typography>
-         </Box>
-         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-            <Button variant="contained" color="primary" onClick={() => onCommentClick(post_id)}>
-               Comment
-            </Button>
-         </Box>
-      </Box>
    );
 };
 
