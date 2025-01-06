@@ -8,35 +8,40 @@ import UserHomePage from './User/UserHomePage';
 import UserProfile from './components/UserProfile';
 import UserOtherProfile from './components/UserOtherProfile';
 import UserMessages from './components/UserMessages';
+import AdminRoutes from '../utils/AdminRoutes';
+import AdminDashboard from './Admin/AdminDashboard';
+import AdminAccountManagement from './Admin/AdminAccountManagement';
+import AdminPostManagement from './Admin/AdminPostManagement';
 
 function App() {
-
   return (
     <>
       <BrowserRouter>
-      <Routes>
-        
-        {/* Test */}
-        
-
-        {/* Public */}
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/admin_login" element={<AdminLogin />} />
-        <Route path="/login" element={<UserLogin />} />
-        <Route path="/register" element={<UserRegister />} />
+        <Routes>
+          {/* Public */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/admin_login" element={<AdminLogin />} />
+          <Route path="/login" element={<UserLogin />} />
+          <Route path="/register" element={<UserRegister />} />
           
-        {/* Protected */}
-        <Route element={<ProtectedRoutes />}>
-          <Route path="/user_home_page" element={<UserHomePage />} />
-          <Route path="/user_profile" element={<UserProfile />} />
-          <Route path="/user_otherprofile" element={<UserOtherProfile />} />
-          <Route path="/user_messages" element={<UserMessages />} />
-        </Route> 
-        
-      </Routes>  
+          {/* Protected */}
+          <Route element={<ProtectedRoutes />}>
+            <Route path="/user_home_page" element={<UserHomePage />} />
+            <Route path="/user_profile" element={<UserProfile />} />
+            <Route path="/user_otherprofile" element={<UserOtherProfile />} />
+            <Route path="/user_messages" element={<UserMessages />} />
+          </Route> 
+
+          {/* Protected Admin */}
+          <Route element={<AdminRoutes />}>
+            <Route path="/admin_dashboard" element={<AdminDashboard />} />
+            <Route path="/admin_account_management" element={<AdminAccountManagement />} />
+            <Route path="/admin_post_management" element={<AdminPostManagement />} />
+          </Route> 
+        </Routes>  
       </BrowserRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

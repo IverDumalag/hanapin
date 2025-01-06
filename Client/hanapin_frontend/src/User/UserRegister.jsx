@@ -21,7 +21,7 @@ const UserRegister = () => {
       email: userData.email || '',
       profile_pic: '',
       password: '',
-      role: 'User',
+      role: 'USER',
       date_of_birth: '',
       sex: '',
       house_number: '',
