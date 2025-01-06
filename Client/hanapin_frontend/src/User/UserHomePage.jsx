@@ -321,6 +321,7 @@ const UserHomePage = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  backgroundColor: 'green',
                }}
             >
                <Box
@@ -330,10 +331,11 @@ const UserHomePage = () => {
                      borderRadius: 3,
                      boxShadow: 2,
                      p: 3,
+                     backgroundColor: 'blue',
                   }}
                >
                   <Box>
-                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 , backgroundColor: 'yellow'}}>
                         <img
                            src={
                               userData?.profile_pic ||
@@ -354,6 +356,7 @@ const UserHomePage = () => {
                            display: 'flex',
                            justifyContent: 'space-around',
                            mt: 2,
+                           backgroundColor: 'purple',
                         }}
                      >
                         <Button
@@ -372,6 +375,7 @@ const UserHomePage = () => {
                         display: 'flex',
                         justifyContent: 'space-around',
                         mt: 2,
+                        backgroundColor: 'lightgrey',
                      }}
                   >
                      <Button variant="text" color="primary" onClick={() => setFilter('MISSING')}>
@@ -388,7 +392,7 @@ const UserHomePage = () => {
                   </Box>
 
                   {/* Post Content */}
-                  <Box sx={{ mt: 2 }}>
+                  <Box sx={{ mt: 2 , backgroundColor: 'orange'}}>
                      {filteredPosts.length > 0 ? (
                         filteredPosts.map((post, index) => (
                            <div
@@ -397,7 +401,7 @@ const UserHomePage = () => {
                                  marginTop: '16px',
                                  padding: '16px',
                                  border: '1px solid #e0e0e0',
-                                 backgroundColor: 'white',
+                                 backgroundColor: 'red',
                                  borderRadius: '8px',
                               }}
                            >
