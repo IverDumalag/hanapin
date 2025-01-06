@@ -334,47 +334,42 @@ const UserHomePage = () => {
                      backgroundColor: 'white',
                   }}
                >
-                  <Box>
-                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 , backgroundColor: 'white'}}>
-                        <img
-                           src={
-                              userData?.profile_pic ||
-                              'https://via.placeholder.com/40'
-                           }
-                           alt="Profile"
-                           style={{
-                              width: 50,
-                              height: 50,
-                              borderRadius: '50%',
-                              cursor: 'pointer',
-                           }}
-                           onClick={() => handleProfileClick(userData.user_id)}
-                        />
-                     </Box>
-                     <Box
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, backgroundColor: 'white', padding: 2 }}>
+                     <img
+                        src={userData?.profile_pic || 'https://via.placeholder.com/40'}
+                        alt="Profile"
+                        style={{
+                           width: 50,
+                           height: 50,
+                           borderRadius: '50%',
+                           cursor: 'pointer',
+                        }}
+                        onClick={() => handleProfileClick(userData.user_id)}
+                     />
+                     <TextField
+                        variant="outlined"
+                        fullWidth
+                        disabled
+                        placeholder="What's on your mind?"
                         sx={{
-                           display: 'flex',
-                           justifyContent: 'space-around',
-                           mt: 2,
                            backgroundColor: 'white',
+                           borderRadius: 1,
+                        }}
+                     />
+                     <Button
+                        className="create-post-button"
+                        variant="contained"
+                        onClick={handleOpen}
+                        sx={{
+                           backgroundColor: '#AFB0CE',
+                           padding: '10px 20px',
+                           color: 'white',
+                           fontSize: '18px',
+                           textTransform: 'none',
                         }}
                      >
-                        <Button
-                           className="create-post-button"
-                           variant="contained"
-                           onClick={handleOpen}
-                           sx={{
-                              backgroundColor: '#AFB0CE',
-                              padding: '10px 20px',
-                              minWidth: '325px',
-                              color: 'white',
-                              fontSize: '18px', 
-                              textTransform: 'none'
-                           }}
-                        >
-                           Create a Post
-                        </Button>
-                     </Box>
+                        Create a Post
+                     </Button>
                   </Box>
 
                   {/* Missing Found Section */}
@@ -462,7 +457,7 @@ const UserHomePage = () => {
                               </div>
                               
                               <div style={{ marginTop: '16px' }}>
-                                 <Typography variant="body1">S: {post.content_state}</Typography><br></br>
+                                 <Typography variant="body1">State: {post.content_state}</Typography><br></br>
                                  <Typography variant="body1">{post.content_text}</Typography>
                               </div>
                               {post.content_picture && (
