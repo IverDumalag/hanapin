@@ -1,3 +1,8 @@
+.dashboard-welcome-admin {
+   padding: 0px;
+   margin-left: 0px;
+}
+
 .dashboard-grid {
    display: grid;
    grid-template-columns: repeat(2, minmax(300px, 1fr));
