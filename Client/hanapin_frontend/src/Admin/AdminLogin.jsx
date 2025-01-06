@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import adminLoginData from '../../../../Client/hanapin_backend/data/AdminLoginData';
+import './AdminLogin.css';
+import bgTemplate from '../../../../Client/hanapin_frontend/src/assets/BG TEMPLATE.png'; 
 
 const AdminLogin = () => {
    const navigate = useNavigate();
@@ -32,7 +34,7 @@ const AdminLogin = () => {
    };
 
    return (
-      <div className="hanapin-admin-login-page">
+      <div className="hanapin-admin-login-page" style={{ backgroundImage: `url(${bgTemplate})` }}>
          <form className="login-form" onSubmit={handleSubmit}>
             <h1>Admin Login</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}

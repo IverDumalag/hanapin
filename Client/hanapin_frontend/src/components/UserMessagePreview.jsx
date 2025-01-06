@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Drawer, List, ListItem, TextField } from '@mui/material';
+import { Box, Drawer, List, ListItem, TextField, Badge } from '@mui/material';
 import userLoginData from '../../../../Client/hanapin_backend/data/UserLoginData';
 import { useNavigate } from 'react-router-dom';
 
@@ -37,7 +37,8 @@ const UserMessagePreview = () => {
                   conversationId: conversation.conversation_id,
                   sender: `${participant.first_name} ${participant.last_name}`,
                   preview: latestMessage.message_text,
-                  profilePic: participant.profile_pic
+                  profilePic: participant.profile_pic,
+                  unreadCount: conversation.unread_count || 0, // Add unread count
                };
             }));
             return messages;
@@ -115,7 +116,7 @@ const UserMessagePreview = () => {
             width: 240,
             flexShrink: 0,
             [`& .MuiDrawer-paper`]: {
-               width: 240,
+               width: 290,
                marginTop: '64px',
                boxSizing: 'border-box',
                zIndex: 1,
@@ -129,12 +130,22 @@ const UserMessagePreview = () => {
                fullWidth
                value={searchQuery}
                onChange={handleSearchChange}
+               sx={{
+                  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+                  borderRadius: '5px',
+                  width: '100%',
+               }}
             />
          </Box>
          <Box sx={{ overflow: 'auto' }}>
             <List>
                {filteredMessages.map((message, index) => (
-                  <MessagePreviewTemplate key={index} message={message} onClick={() => handleMessageClick(message.conversationId)} />
+                  <MessagePreviewTemplate
+                     key={index}
+                     message={message}
+                     unreadCount={message.unreadCount} // Pass unread count
+                     onClick={() => handleMessageClick(message.conversationId)}
+                  />
                ))}
             </List>
          </Box>
@@ -142,33 +153,60 @@ const UserMessagePreview = () => {
    );
 };
 
-const MessagePreviewTemplate = ({ message, onClick }) => {
+const MessagePreviewTemplate = ({ message, onClick, unreadCount }) => {
    return (
-      <ListItem button onClick={onClick}>
-         <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <ListItem
+         button
+         onClick={onClick}
+         sx={{
+            background: 'linear-gradient(90deg, #FFFFFF 30%, #BA96DD 70%)',
+            marginBottom: 1,
+            borderRadius: 0,
+            boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+         }}
+      >
+         <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+            {/* Profile Picture */}
             <Box
                component="img"
                src={message.profilePic}
                alt={`${message.sender}'s profile`}
-               sx={{ width: 40, height: 40, borderRadius: '50%', marginRight: 2 }}
+               sx={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: '50%',
+                  marginRight: 2,
+                  border: '2px solid #ddd',
+               }}
             />
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-               <Box sx={{ fontWeight: 'bold' }}>{message.sender}</Box>
+
+            {/* Message Details */}
+            <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+               <Box sx={{ fontFamily: 'Arial' , fontWeight: 'bold', fontSize: '18px' }}>{message.sender}</Box>
                <Box
                   sx={{
-                     color: 'gray',
+                     color: 'black',
+                     fontFamily: 'Arial',
                      display: '-webkit-box',
                      WebkitBoxOrient: 'vertical',
                      overflow: 'hidden',
                      textOverflow: 'ellipsis',
                      WebkitLineClamp: 2,
-                     lineClamp: 2,
-                     maxHeight: '3em'
+                     fontSize: '16px',
                   }}
                >
                   {message.preview}
                </Box>
             </Box>
+
+            {/* Unread Count */}
+            {unreadCount > 0 && (
+               <Badge
+                  badgeContent={unreadCount}
+                  color="error"
+                  sx={{ marginLeft: 2 }}
+               />
+            )}
          </Box>
       </ListItem>
    );
