@@ -55,11 +55,11 @@ export default function PrimarySearchAppBar({ children, onSearch }) {
    };
 
    return (
-      <Box sx={{ flexGrow: 1, margin: 0, padding: 0 }}>
-         <AppBar position="fixed" sx={{ top: 0, left: 0, right: 0, bgcolor: 'lightgrey' }}>
+      <Box sx={{ flexGrow: 1, margin: 0, padding: 0 , borderRadius: '2px'}}>
+         <AppBar position="fixed" sx={{ top: 0, left: 0, right: 0, bgcolor: '#AFB0CE' }}>
             <Toolbar>
                <IconButton
-                  size="large"
+                  size="medium"
                   edge="start"
                   color="inherit"
                   aria-label="home"
@@ -70,14 +70,32 @@ export default function PrimarySearchAppBar({ children, onSearch }) {
                </IconButton>
 
                <TextField
+                  className='search-bar'
                   variant="outlined"
-                  placeholder="Search…"
+                  placeholder="Search"
                   size="small"
                   value={searchQuery}
                   onChange={handleSearchChange}
-                  onKeyPress={handleSearchKeyPress}
-                  sx={{ display: { xs: 'none', sm: 'block' }, width: '100%' }}
-               />
+                  onKeyDown={handleSearchKeyPress}
+                  fullWidth
+                  sx={{
+                     display: { xs: 'none', sm: 'block' },
+                     width: '20%',
+                     bgcolor: '#FFFFFF',
+                     borderRadius: '5px',
+                     '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                        borderColor: '#AFB0CE', // Default border
+                        },
+                        '&:hover fieldset': {
+                        borderColor: '#BA96DD', // Hover state
+                        },
+                        '&.Mui-focused fieldset': {
+                        borderColor: '#F0D5E3', // Focused state
+                        },
+                     },
+                  }}
+                  />
 
                <Box sx={{ flexGrow: 1 }} />
                <Box sx={{ display: 'flex', alignItems: 'center' }}>
