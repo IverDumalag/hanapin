@@ -357,18 +357,16 @@ const UserHomePage = () => {
                         }}
                      />
                      <Button
-                        className="create-post-button"
                         variant="contained"
                         onClick={handleOpen}
                         sx={{
                            backgroundColor: '#AFB0CE',
-                           padding: '10px 20px',
+                           padding: '1px 15px',
                            color: 'white',
-                           fontSize: '18px',
-                           textTransform: 'none',
+                           fontSize: '15px',
                         }}
                      >
-                        Create a Post
+                        Create Post
                      </Button>
                   </Box>
 
@@ -563,7 +561,7 @@ const UserHomePage = () => {
       <Modal open={commentModalOpen} onClose={handleCloseCommentModal}>
             <Box sx={{ ...modalStyle, width: 900 }}>
                <Typography variant="h6">Comments</Typography>
-               <Box sx={{ maxHeight: 400, overflowY: 'auto', mt: 2 }}>
+               <Box sx={{ maxHeight: 400, overflowY: 'auto', mt: 2 , bgcolor: 'pi'}}>
                   {comments.length > 0 ? (
                      comments.map((comment, index) => (
                         <Box key={index} sx={{ mb: 2 }}>
@@ -617,7 +615,25 @@ const UserHomePage = () => {
                      <input type="file" hidden onChange={handleCommentFileChange} />
                      </Button>
                   </Box>
-                  <Button variant="contained" color="primary" onClick={handlePostComment}>
+                  <Button
+                     variant="contained"
+                     color="primary"
+                     onClick={handlePostComment}
+                     sx={{
+                        backgroundColor: '#ff6584',
+                        color: '#fff',
+                        padding: '8px 16px',
+                        fontSize: '14px',
+                        fontWeight: 'bold',
+                        borderRadius: '8px',
+                        textTransform: 'none',
+                        boxShadow: 'none',
+                        '&:hover': {
+                           backgroundColor: '#e65273',
+                           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                        },
+                     }}
+                  >
                      Post Comment
                   </Button>
                </Box>

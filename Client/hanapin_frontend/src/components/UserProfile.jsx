@@ -369,13 +369,8 @@ const UserProfile = () => {
                   }}
                >
                   <Box
-                     width="70%"
-                     sx={{
-                        bgcolor: 'lightgrey',
-                        borderRadius: 3,
-                        boxShadow: 2,
-                        p: 3,
-                     }}
+                     width="85%"
+                     
                   >
                      <Box
                         sx={{
@@ -402,6 +397,7 @@ const UserProfile = () => {
                                  borderRadius: '50%',
                               }}
                            />
+
                            <Box>
                               <Typography variant="h6">
                                  {`${userData?.first_name || ''} ${userData?.middle_name || ''} ${userData?.last_name || ''} ${userData?.extension || ''}`.trim()}
@@ -411,6 +407,7 @@ const UserProfile = () => {
                               </Typography>
                            </Box>
                         </Box>
+                        
                         <Button
                            variant="contained"
                            color="primary"
@@ -420,7 +417,10 @@ const UserProfile = () => {
                            Edit Profile
                         </Button>
                      </Box>
-
+                     <br></br>
+                     <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
+                           Post
+                        </Typography>
                      {/* Post Content */}
                      <Box sx={{ mt: 2 }}>
                         {filteredPosts.length > 0 ? (
@@ -440,8 +440,30 @@ const UserProfile = () => {
          </Box>
 
          <Modal open={editProfile} onClose={() => setEditProfile(false)}>
-            <Box sx={{ ...modalStyle }}>
-               <Typography variant="h6">Edit Profile</Typography>
+            <Box
+               sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: '600px',
+                  bgcolor: '#fff',
+                  borderRadius: '12px',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                  p: 4,
+               }}
+            >
+               <Typography
+                  variant="h6"
+                  sx={{
+                     fontSize: '24px',
+                     fontWeight: 'bold',
+                     mb: 2,
+                  }}
+               >
+                  Edit Profile
+               </Typography>
+
                <TextField
                   fullWidth
                   label="First Name"
@@ -490,22 +512,40 @@ const UserProfile = () => {
                      readOnly: true,
                   }}
                />
+
                <Box sx={{ mt: 2 }}>
-                  <label>Profile Picture</label>
-                  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 1 }}>
+                  <label
+                     style={{
+                        fontSize: '16px',
+                        fontWeight: 'bold',
+                        marginBottom: '8px',
+                        display: 'block',
+                     }}
+                  >
+                     Profile Picture
+                  </label>
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        mt: 1,
+                     }}
+                  >
                      <img
                         src={temporaryProfilePic || 'https://via.placeholder.com/100'}
                         alt="Temporary Profile"
                         style={{
-                           width: 100,
-                           height: 100,
+                           width: '100px',
+                           height: '100px',
                            borderRadius: '50%',
-                           marginBottom: 10,
+                           marginBottom: '10px',
                         }}
                      />
                      <input type="file" onChange={handleFileChange} />
                   </Box>
                </Box>
+
                <TextField
                   fullWidth
                   label="House Number"
@@ -569,16 +609,53 @@ const UserProfile = () => {
                   onChange={(e) => setUserData({ ...userData, postal_code: e.target.value })}
                   sx={{ mt: 2 }}
                />
-               <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-                  <Button variant="contained" color="primary" onClick={handleConfirmSave}>
+
+               <Box
+                  sx={{
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     mt: 3,
+                  }}
+               >
+                  <Button
+                     variant="contained"
+                     color="primary"
+                     onClick={handleConfirmSave}
+                     sx={{
+                        backgroundColor: '#f5b8c7',
+                        color: '#fff',
+                        padding: '10px 20px',
+                        fontSize: '16px',
+                        borderRadius: '8px',
+                        '&:hover': {
+                           backgroundColor: '#ec9aac',
+                        },
+                     }}
+                  >
                      Save
                   </Button>
-                  <Button variant="outlined" color="secondary" onClick={() => setEditProfile(false)}>
+                  <Button
+                     variant="outlined"
+                     color="secondary"
+                     onClick={() => setEditProfile(false)}
+                     sx={{
+                        borderColor: '#f5b8c7',
+                        color: '#f5b8c7',
+                        padding: '10px 20px',
+                        fontSize: '16px',
+                        borderRadius: '8px',
+                        '&:hover': {
+                           backgroundColor: '#f5b8c7',
+                           color: '#fff',
+                        },
+                     }}
+                  >
                      Cancel
                   </Button>
                </Box>
             </Box>
          </Modal>
+
 
          <Dialog
             open={confirmDialogOpen}
@@ -757,15 +834,60 @@ const PostContent = ({ profile_pic, first_name, last_name, content_text, content
             </Typography>
          </Box>
          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-            <Button variant="contained" color="primary" onClick={() => onCommentClick(post_id)}>
-               Comment
-            </Button>
-            <Button variant="outlined" color="secondary" onClick={() => onDelete(post_id)}>
+         <Button
+            variant="contained"
+            color="primary"
+            onClick={() => onCommentClick(post_id)}
+            sx={{
+               backgroundColor: '#AFB0CE',
+               color: '#fff',
+               padding: '8px 16px',
+               fontSize: '14px',
+               borderRadius: '5px',
+               textTransform: 'none',
+               boxShadow: 'none',
+               '&:hover': {
+                  backgroundColor: '#1565c0',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+               },
+            }}
+         >
+            COMMENT
+         </Button>
+         <Button
+               variant="text"
+               color="secondary"
+               onClick={() => onDelete(post_id)}
+               sx={{
+                  borderColor: '#d32f2f',
+                  color: '#d32f2f',
+                  padding: '8px 16px',
+                  fontSize: '14px',
+                  fontWeight: 'bold',
+                  borderRadius: '8px',
+                  textTransform: 'none',
+                  '&:hover': {
+                     backgroundColor: '#f8d7da',
+                     borderColor: '#c62828',
+                     color: '#AFB0CE',
+                  },
+               }}
+            >
                Delete
             </Button>
-            <Button variant="outlined" color="secondary" onClick={() => onFound(post_id)}>
-               Set To Found
-            </Button>
+            <Button
+                  variant="text"
+                  onClick={() => onFound(post_id)}
+                  sx={{
+                     padding: '8px 16px',
+                     fontSize: '14px',
+                     fontWeight: 'bold',
+                     borderRadius: '8px',
+                     textTransform: 'none'
+                  }}
+               >
+                  Set To Found
+               </Button>
          </Box>
       </Box>
    );
