@@ -462,7 +462,7 @@ const UserHomePage = () => {
                               </div>
                               
                               <div style={{ marginTop: '16px' }}>
-                                 <Typography variant="body1">Status: {post.content_state}</Typography>
+                                 <Typography variant="body1">Status: {post.content_state}</Typography><br></br>
                                  <Typography variant="body1">{post.content_text}</Typography>
                               </div>
                               {post.content_picture && (
