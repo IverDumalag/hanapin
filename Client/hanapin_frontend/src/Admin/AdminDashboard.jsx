@@ -3,6 +3,8 @@ import axios from 'axios';
 import AdminSideBar from '../components/AdminSideBar';
 import AdminToolBar from '../components/AdminToolBar';
 import './AdminDashboard.css';
+import userSelectAdminData from '../../../../Client/hanapin_backend/data/AdminLoginData';
+
 
 const AdminDashboard = () => {
    const [missingFoundData, setMissingFoundData] = useState([]);
@@ -69,9 +71,15 @@ const AdminDashboard = () => {
       }
    };
 
+   const [userAdminData, setAdminUserData] = useState(userSelectAdminData.getData('admin'));
+
    return (
       <AdminSideBar>
          <AdminToolBar>
+            <div className="dashboard-welcome-admin">
+               <h1>Welcome Mr. {userAdminData.last_name}!</h1>
+               <p>{`Today is ${new Date().toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`}</p>
+            </div>
             <h1>Admin Dashboard</h1>
             <div className="dashboard-grid">
                <div className="dashboard-card">
