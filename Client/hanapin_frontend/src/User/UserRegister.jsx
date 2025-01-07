@@ -222,7 +222,7 @@ const UserRegister = () => {
 
                <div className="PASSWORD">
                   <label>Password</label>
-                  <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
+                  <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required minLength="8" />
                </div>
 
                <div className="DATE_OF_BIRTH">
