@@ -228,150 +228,226 @@ const UserMessages = () => {
       `${conversation.participant.first_name} ${conversation.participant.last_name}`
          .toLowerCase()
          .includes(searchTerm.toLowerCase())
-   );
-
-   return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-         <Box sx={{ display: 'flex', flex: 1 }}>
-            <Box sx={{ width: '30%', borderRight: '1px solid #e0e0e0', overflowY: 'auto' }}>
-               <List>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: 2, bgcolor: 'lightgrey' }}>
-                     <Typography variant="h5">Chat</Typography>
-                     <TextField
-                        variant="outlined"
-                        placeholder="Search person"
-                        fullWidth
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        sx={{ marginLeft: 2 }}
-                     />
-                     <Button variant="contained" color="primary" onClick={() => navigate('/user_home_page')}>
-                        Back to Home
-                     </Button>
-                  </Box>
-                  {filteredConversations.map((conversation) => (
-                     <ListItem
-                        button
-                        key={conversation.conversation_id}
-                        onClick={() => {
-                           setSelectedConversation(conversation.conversation_id);
-                           fetchMessages(conversation.conversation_id);
-                        }}
-                     >
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                           <Box
-                              component="img"
-                              src={conversation.participant.profile_pic}
-                              alt={`${conversation.participant.first_name} ${conversation.participant.last_name}`}
-                              sx={{ width: 40, height: 40, borderRadius: '50%', marginRight: 2 }}
-                           />
-                           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                              <Box sx={{ fontWeight: 'bold' }}>{`${conversation.participant.first_name} ${conversation.participant.last_name}`}</Box>
-                              <Box
-                                 sx={{
-                                    color: 'gray',
-                                    display: '-webkit-box',
-                                    WebkitBoxOrient: 'vertical',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    WebkitLineClamp: 2,
-                                    lineClamp: 2,
-                                    maxHeight: '3em'
-                                 }}
-                              >
-                                 {conversation.latestMessage}
-                              </Box>
-                           </Box>
-                        </Box>
-                     </ListItem>
-                  ))}
-               </List>
-            </Box>
-            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', padding: 2 }}>
-               <Box sx={{ flex: 1, overflowY: 'auto', marginBottom: 2 }}>
-                  {selectedParticipant && (
-                     <Box sx={{ display: 'flex', padding: 2, bgcolor: 'lightgrey', alignItems: 'center' }}>
+   );      
+         return (
+            <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+               <Box sx={{ display: 'flex', flex: 1 }}>
+                  <Box sx={{ width: '30%', borderRight: '1px solid #e0e0e0', overflowY: 'auto' }}>
+                     <List>
                         <Box
-                           component="img"
-                           src={selectedParticipant.profile_pic}
-                           alt={`${selectedParticipant.first_name} ${selectedParticipant.last_name}`}
-                           sx={{ width: 80, height: 80, marginRight: 2 }}
-                        />
-                        <Typography variant="h5">{`${selectedParticipant.first_name} ${selectedParticipant.last_name}`}</Typography>
-                     </Box>
-                  )}
-                  {messages.length > 0 ? (
-                     messages.map((message, index) => (
-                        <Box 
-                           key={index} 
-                           sx={{ 
-                              marginBottom: 2, 
-                              textAlign: message.sender_id === userId ? 'right' : 'left',
-                              maxWidth: '100%',
-                              wordWrap: 'break-word',
-                              alignSelf: message.sender_id === userId ? 'flex-end' : 'flex-start'
+                           sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              padding: 2,
+                              bgcolor: 'white',
                            }}
                         >
-                           <Typography variant="body1">{message.message_text}</Typography>
-                           {message.message_image && (
+                           <Typography variant="h4">Chats</Typography>
+                           <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={() => navigate('/user_home_page')}
+                           >
+                              Back to Home
+                           </Button>
+                        </Box>
+      
+                        <Box
+                           sx={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              padding: 2,
+                              bgcolor: 'white',
+                           }}
+                        >
+                           <TextField
+                              variant="outlined"
+                              placeholder="Search"
+                              fullWidth
+                              value={searchTerm}
+                              onChange={(e) => setSearchTerm(e.target.value)}
+                              sx={{ marginRight: 1 }}
+                           />
+                        </Box>
+                        {filteredConversations.map((conversation) => (
+                           <ListItem
+                              button
+                              key={conversation.conversation_id}
+                              onClick={() => {
+                                 setSelectedConversation(conversation.conversation_id);
+                                 fetchMessages(conversation.conversation_id);
+                              }}
+                           >
+                              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                 <Box
+                                    component="img"
+                                    src={conversation.participant.profile_pic}
+                                    alt={`${conversation.participant.first_name} ${conversation.participant.last_name}`}
+                                    sx={{
+                                       width: 40,
+                                       height: 80,
+                                       borderRadius: '50%',
+                                       marginRight: 2,
+                                    }}
+                                 />
+                                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                    <Box sx={{ fontWeight: 'bold' }}>
+                                       {`${conversation.participant.first_name} ${conversation.participant.last_name}`}
+                                    </Box>
+                                    <Box
+                                       sx={{
+                                          color: 'gray',
+                                          display: '-webkit-box',
+                                          WebkitBoxOrient: 'vertical',
+                                          overflow: 'hidden',
+                                          textOverflow: 'ellipsis',
+                                          WebkitLineClamp: 2,
+                                          lineClamp: 2,
+                                          maxHeight: '3em',
+                                       }}
+                                    >
+                                       {conversation.latestMessage}
+                                    </Box>
+                                 </Box>
+                              </Box>
+                           </ListItem>
+                        ))}
+                     </List>
+                  </Box>
+                  <Box
+                     sx={{
+                        flex: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: 2,
+                        background: 'linear-gradient(to bottom, #ffffff, #d9c2e9)', // Gradient background
+                        borderRadius: '12px',
+                        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+                     }}
+                  >
+                     <Box sx={{ flex: 1, overflowY: 'auto', marginBottom: 2 }}>
+                        {selectedParticipant && (
+                           <Box
+                              sx={{
+                                 display: 'flex',
+                                 padding: 2,
+                                 bgcolor: 'white',
+                                 borderRadius: 3,
+                                 alignItems: 'center',
+                                 boxShadow: 1,                              }}
+                           >
                               <Box
                                  component="img"
-                                 src={message.message_image}
-                                 alt="Message Image"
-                                 sx={{ maxWidth: '100%', maxHeight: 200, marginTop: 1 }}
+                                 src={selectedParticipant.profile_pic}
+                                 alt={`${selectedParticipant.first_name} ${selectedParticipant.last_name}`}
+                                 sx={{ width: 80, height: 80, marginRight: 2 }}
                               />
-                           )}
-                           <Typography variant="body2" color="textSecondary">
-                              {message.sender_id === userId ? 'You' : message.senderName} - {formatDate(message.sent_at)}
+                              <Typography variant="h5">{`${selectedParticipant.first_name} ${selectedParticipant.last_name}`}</Typography>
+                           </Box>
+                        )}
+                        {messages.length > 0 ? (
+                           messages.map((message, index) => (
+                              <Box
+                                 key={index}
+                                 sx={{
+                                    marginTop: 4,
+                                    marginBottom: 2,
+                                    textAlign:
+                                       message.sender_id === userId ? 'right' : 'left',
+                                    maxWidth: '100%',
+                                    wordWrap: 'break-word',
+                                    alignSelf:
+                                       message.sender_id === userId
+                                          ? 'flex-end'
+                                          : 'flex-start',
+                                    padding: 1,
+                                 }}
+                              >
+                                 <Typography variant="body1">{message.message_text}</Typography>
+                                 {message.message_image && (
+                                    <Box
+                                       component="img"
+                                       src={message.message_image}
+                                       alt="Message Image"
+                                       sx={{
+                                          maxWidth: '100%',
+                                          maxHeight: 200,
+                                          marginTop: 1,
+                                       }}
+                                    />
+                                 )}
+                                 <Typography variant="body2" color="textSecondary">
+                                    {message.sender_id === userId
+                                       ? 'You'
+                                       : message.senderName}{' '}
+                                    - {formatDate(message.sent_at)}
+                                 </Typography>
+                              </Box>
+                           ))
+                        ) : (
+                           <Typography variant="body1" color="textSecondary">
+                              No messages in this conversation.
                            </Typography>
+                        )}
+                     </Box>
+      
+                     <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                        {fileUrl && (
+                           <Box
+                              component="img"
+                              src={fileUrl}
+                              alt="Selected File"
+                              sx={{ maxWidth: '100%', maxHeight: 200, marginBottom: 2 }}
+                           />
+                        )}
+                        <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                           <Button
+                              variant="contained"
+                              component="label"
+                              disabled={!selectedConversation}
+                           >
+                              Add File
+                              <input type="file" hidden onChange={handleFileChange} />
+                           </Button>
+                           <TextField
+                              fullWidth
+                              variant="outlined"
+                              size="small"
+                              value={newMessage}
+                              onChange={(e) => setNewMessage(e.target.value)}
+                              placeholder="Type a message"
+                              disabled={!selectedConversation}
+                              multiline
+                              rows={2}
+                              sx={{
+                                 backgroundColor: 'white',
+                                 borderRadius: '8px',
+                                 boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+                                 marginLeft: 1,
+                              }}
+                           />
+                           <Button
+                              variant="contained"
+                              sx={{
+                                 backgroundColor: '#9c27b0',
+                                 '&:hover': { backgroundColor: '#7b1fa2' },
+                                 padding: '17px 24px',
+                                 fontSize: '16px',
+                                 borderRadius: '8px',
+                                 marginLeft: 1,
+                              }}
+                              onClick={handleSendMessage}
+                              disabled={!selectedConversation}
+                           >
+                              Send
+                           </Button>
                         </Box>
-                     ))
-                  ) : (
-                     <Typography variant="body1" color="textSecondary">
-                        No messages in this conversation.
-                     </Typography>
-                  )}
-               </Box>
-               
-               <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                  {fileUrl && (
-                     <Box
-                        component="img"
-                        src={fileUrl}
-                        alt="Selected File"
-                        sx={{ maxWidth: '100%', maxHeight: 200, marginBottom: 2 }}
-                     />
-                  )}
-                  <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                     <Button variant="contained" component="label" disabled={!selectedConversation}>
-                        Add File
-                        <input type="file" hidden onChange={handleFileChange} />
-                     </Button>
-                     <TextField
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
-                        placeholder="Type a message"
-                        disabled={!selectedConversation}
-                        multiline
-                        rows={2}
-                     />
-                     <Button 
-                        variant="contained" 
-                        color="primary" 
-                        onClick={handleSendMessage} 
-                        disabled={!selectedConversation}
-                     >
-                        Send
-                     </Button>
+                     </Box>
                   </Box>
                </Box>
             </Box>
-         </Box>
-      </Box>
-   );
-};
-
-export default UserMessages;
+         );
+      };
+      
+      export default UserMessages;

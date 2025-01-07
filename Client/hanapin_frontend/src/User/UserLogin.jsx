@@ -57,12 +57,13 @@ const UserLogin = () => {
                   placeholder="password"
                   required
                />
-            </div>
-            <p style={{fontFamily: 'Arial', color: '#AFB0CE'}}>Log in if you are already a member.</p>
-            <button type="submit">LOGIN</button> <p style={{fontFamily: 'Arial', color: '#AFB0CE'}}>Register if you are not yet a member.</p>
-            <button type="button" className="register-button" onClick={() => navigate('/register')} style={{ backgroundColor: '#BA96DD' }}>
+            </div><br></br>
+            
+           <br></br> <button type="submit">LOGIN</button> <p style={{fontFamily: 'Arial', color: '#AFB0CE'}}><p style={{fontFamily: 'Arial', color: '#AFB0CE'}}>Log in if you are already a member.</p>
+            <button type="button" className="register-button" onClick={() => navigate('/register')} style={{ backgroundColor: '#BA96DD' }}> 
                REGISTER
             </button>
+            Register if you are not yet a member.</p>
          </form>
       </div>
    );

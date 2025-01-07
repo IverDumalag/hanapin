@@ -126,7 +126,7 @@ const UserMessagePreview = () => {
          <Box sx={{ overflow: 'auto', padding: 2 }}>
             <TextField
                variant="outlined"
-               placeholder="Search person"
+               placeholder="Search"
                fullWidth
                value={searchQuery}
                onChange={handleSearchChange}
@@ -134,10 +134,11 @@ const UserMessagePreview = () => {
                   boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
                   borderRadius: '5px',
                   width: '100%',
+                  height: '100%',
                }}
             />
          </Box>
-         <Box sx={{ overflow: 'auto' }}>
+         <Box sx={{ overflow: 'auto',}}>
             <List>
                {filteredMessages.map((message, index) => (
                   <MessagePreviewTemplate
