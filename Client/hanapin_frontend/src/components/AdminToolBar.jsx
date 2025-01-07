@@ -8,6 +8,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate, useLocation } from 'react-router-dom';
 import adminLoginData from '../../../../Client/hanapin_backend/data/AdminLoginData';
+import './AdminToolBar.css';
 
 const AdminToolBar = ({ children }) => {
    const navigate = useNavigate();
@@ -32,7 +33,7 @@ const AdminToolBar = ({ children }) => {
    const getPageTitle = () => {
       switch (location.pathname) {
          case '/admin_dashboard':
-            return 'Dashboard';
+            return 'Admin Dashboard';
          case '/admin_post_management':
             return 'Post Management';
          case '/admin_account_management':
@@ -43,10 +44,10 @@ const AdminToolBar = ({ children }) => {
    };
 
    return (
-      <Box sx={{ flexGrow: 1 }}>
-         <AppBar position="fixed" sx={{ top: 0, left: '240px', right: "0px", bgcolor: 'lightgrey', width: 'calc(100% - 240px)' }}>
+      <Box className="admin-toolbar-container">
+         <AppBar position="fixed" className="admin-appbar">
             <Toolbar>
-               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+               <Typography variant="h6" component="div" className="admin-toolbar-title">
                   {getPageTitle()}
                </Typography>
                <IconButton
@@ -61,14 +62,14 @@ const AdminToolBar = ({ children }) => {
                   <img
                      src={adminLoginData.getData('admin')?.profile_pic || 'https://via.placeholder.com/40'}
                      alt="profile"
-                     style={{ borderRadius: '50%', width: '40px', height: '40px' }}
+                     className="admin-profile-pic"
                   />
                </IconButton>
                <Menu
                   id="menu-appbar"
                   anchorEl={anchorEl}
                   anchorOrigin={{
-                     vertical: 'top',
+                     vertical: 'bottom',
                      horizontal: 'right',
                   }}
                   keepMounted
@@ -83,7 +84,7 @@ const AdminToolBar = ({ children }) => {
                </Menu>
             </Toolbar>
          </AppBar>
-         <Box sx={{ marginTop: '30px', padding: 2 }}>
+         <Box className="admin-toolbar-content">
             {children}
          </Box>
       </Box>
