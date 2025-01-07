@@ -5,7 +5,6 @@ import AdminToolBar from '../components/AdminToolBar';
 import './AdminDashboard.css';
 import userSelectAdminData from '../../../../Client/hanapin_backend/data/AdminLoginData';
 
-
 const AdminDashboard = () => {
    const [missingFoundData, setMissingFoundData] = useState([]);
    const [userContributions, setUserContributions] = useState([]);
@@ -76,11 +75,10 @@ const AdminDashboard = () => {
    return (
       <AdminSideBar>
          <AdminToolBar>
-            <div className="dashboard-welcome-admin">
-               <h1>Welcome Mr. {userAdminData.last_name}!</h1>
-               <p>{`Today is ${new Date().toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`}</p>
+            <div className="dashboard-welcome">
+               <h1 className="dashboard-welcome-admin">Welcome Mr. {userAdminData.last_name}!</h1>
+               <p className='dashboard-welcome-date'>{`Today is ${new Date().toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`}</p>
             </div>
-            <h1>Admin Dashboard</h1>
             <div className="dashboard-grid">
                <div className="dashboard-card">
                   <h2>Missing/Found Per Place</h2>
@@ -158,6 +156,7 @@ const AdminDashboard = () => {
                         <tr>
                            <th>Post ID</th>
                            <th>Total Comments</th>
+                           <th>Total Messages</th>
                         </tr>
                      </thead>
                      <tbody>
@@ -165,6 +164,7 @@ const AdminDashboard = () => {
                            <tr key={index}>
                               <td>{item.post_id}</td>
                               <td>{item.total_comments}</td>
+                              <td>{item.total_messages}</td>
                            </tr>
                         ))}
                      </tbody>
