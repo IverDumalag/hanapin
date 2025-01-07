@@ -1,45 +1,104 @@
 .post-welcome-admin {
-   padding: 0px;
-   margin-left: 0px;
+   padding: 0 !important;
+   margin-left: 0 !important;
+   color: #BA96DD !important;
+}
+
+.post-welcome-date {
+   margin-top: -10px !important;
+   margin-bottom: 70px !important;
+   color: black !important;
 }
 
 .admin-post-management-table {
-   width: 100%;
-   border-collapse: collapse;
+   width: 100% !important;
+   border-collapse: collapse !important;
+   border: 1px solid #ddd !important;
 }
 
 .admin-post-management-table th,
 .admin-post-management-table td {
-   border: 1px solid #ddd;
-   padding: 10px;
+   border: 1px solid #ddd !important;
+   padding: 10px !important;
+   text-align: center !important;
 }
 
 .admin-post-management-table th {
-   background-color: #f2f2f2;
-   text-align: left;
+   background-color: white !important;
 }
 
 .admin-post-management-table tr:nth-child(even) {
-   background-color: #f9f9f9;
+   background-color: #f9f9f9 !important;
 }
 
 .admin-post-management-table tr:hover {
-   background-color: #ddd;
+   background-color: #ddd !important;
+}
+
+.view-btn,
+.delete-btn {
+   background-color: #AFB0CE !important;
+   color: white !important;
+   padding: 10px !important;
+   border: none !important;
+   border-radius: 5px !important;
+   cursor: pointer !important;
+   margin: 5px !important;
 }
 
 .modal-box {
-   position: absolute;
-   top: 50%;
-   left: 50%;
-   transform: translate(-50%, -50%);
-   background-color: white;
-   border: 2px solid #000;
-   box-shadow: 24px;
-   padding: 16px;
-   width: 600px;
+   position: fixed !important;
+   top: 50% !important;
+   left: 50% !important;
+   transform: translate(-50%, -50%) !important;
+   background-color: white !important;
+   border: 2px solid #000 !important;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+   padding: 20px !important;
+   width: 600px !important;
+   border-radius: 5px !important;
+   display: flex !important;
+   flex-direction: column !important;
+   align-items: center !important;  
+}
+
+.modal-title {
+   color: #BA96DD !important;
 }
 
 .post-content-image {
-   width: 100%;
-   margin-top: 10px;
+   width: 100% !important;
+   margin-top: 10px !important;
+}
+
+.close-btn,
+.confirm-btn,
+.cancel-btn {
+   padding: 10px !important;
+   border: none !important;
+   border-radius: 5px !important;
+   cursor: pointer !important;
+   margin: 5px !important;
+   width: 100px !important;
+}
+
+.close-btn {
+   background-color: #4CAF50 !important;
+   color: white !important;
+}
+
+.confirm-btn {
+   background-color: #4CAF50 !important;
+   color: white !important;
+}
+
+.cancel-btn {
+   background-color: #f44336 !important;
+   color: white !important;
+}
+
+.button-container {
+   display: flex !important;
+   justify-content: center!important;
+   width: 100% !important;
 }
