@@ -309,23 +309,23 @@ const UserHomePage = () => {
 
 
    return (
-      <>
-      <Box sx={{ bgcolor: 'lightgrey', minHeight: '100vh' }}>
-         <UserToolBar onSearch={handleSearch} />
-         <Box sx={{ marginTop: '64px', display: 'flex' }}>
-            <UserFilterBar onFilter={handleFilter} />
-            <Box
-               sx={{
-                  flex: 1,
-                  padding: 2,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: 'lightgrey',
-               }}
-            >
+<>
+   <Box sx={{ bgcolor: '#f0f0f0', minHeight: '100vh' }}>
+      <UserToolBar onSearch={handleSearch} />
+      <Box sx={{ marginTop: '64px', display: 'flex' }}>
+         <UserFilterBar onFilter={handleFilter} />
+         <Box
+            sx={{
+               flex: 1,
+               padding: 2,
+               display: 'flex',
+               alignItems: 'center',
+               justifyContent: 'center',
+               backgroundColor: '#eF5EFFF',
+            }}
+         >
                <Box
-                  width="85%"
+                  width="88%"
                   sx={{
                      bgcolor: 'white',
                      borderRadius: 3,
@@ -423,6 +423,7 @@ const UserHomePage = () => {
                      </Button>         
                   
                   </Box>
+                  <br></br>
 
                   {/* Post Content */}
                   <Box sx={{ mt: 2 , backgroundColor: 'white'}}>

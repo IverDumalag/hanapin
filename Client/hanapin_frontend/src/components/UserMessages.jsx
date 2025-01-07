@@ -232,23 +232,45 @@ const UserMessages = () => {
 
    return (
       <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-         <Box sx={{ display: 'flex', flex: 1 }}>
-            <Box sx={{ width: '30%', borderRight: '1px solid #e0e0e0', overflowY: 'auto' }}>
-               <List>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: 2, bgcolor: 'lightgrey' }}>
-                     <Typography variant="h5">Chat</Typography>
-                     <TextField
-                        variant="outlined"
-                        placeholder="Search person"
-                        fullWidth
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        sx={{ marginLeft: 2 }}
-                     />
-                     <Button variant="contained" color="primary" onClick={() => navigate('/user_home_page')}>
-                        Back to Home
-                     </Button>
-                  </Box>
+         <Box sx={{ display: 'flex', flex: 1, padding: 1 }}>
+            <Box sx={{ width: '25%', borderRight: '1px solid #e0e0e0', overflowY: 'auto' }}>
+
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2, marginTop: 2, marginRight:2 }}>
+   <Typography variant="h4">Chat</Typography>
+         <Button
+         variant="contained"
+         color="primary"
+         onClick={() => navigate('/user_home_page')}
+         sx={{
+            backgroundColor: '#6a1b9a',
+            color: '#fff',
+            '&:hover': {
+                  backgroundColor: '#4a148c',
+            },
+            borderRadius: '10px',
+            padding: '10px 20px',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            textTransform: 'none',
+         }}
+      >
+         Back to Home
+      </Button>
+
+      </Box>
+      <List>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: 1, bgcolor: 'white' }}>
+            <TextField
+               variant="outlined"
+               placeholder="Search"
+               fullWidth
+               value={searchTerm}
+               onChange={(e) => setSearchTerm(e.target.value)}
+               sx={{ marginRight: 2 }}
+           />
+                </Box>
+                <br></br>
+
                   {filteredConversations.map((conversation) => (
                      <ListItem
                         button
@@ -263,7 +285,7 @@ const UserMessages = () => {
                               component="img"
                               src={conversation.participant.profile_pic}
                               alt={`${conversation.participant.first_name} ${conversation.participant.last_name}`}
-                              sx={{ width: 40, height: 40, borderRadius: '50%', marginRight: 2 }}
+                              sx={{ width: 65, height: 65, borderRadius: '50%', marginRight: 2 }}
                            />
                            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                               <Box sx={{ fontWeight: 'bold' }}>{`${conversation.participant.first_name} ${conversation.participant.last_name}`}</Box>
@@ -287,66 +309,123 @@ const UserMessages = () => {
                   ))}
                </List>
             </Box>
-            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', padding: 2 }}>
-               <Box sx={{ flex: 1, overflowY: 'auto', marginBottom: 2 }}>
-                  {selectedParticipant && (
-                     <Box sx={{ display: 'flex', padding: 2, bgcolor: 'lightgrey', alignItems: 'center' }}>
-                        <Box
-                           component="img"
-                           src={selectedParticipant.profile_pic}
-                           alt={`${selectedParticipant.first_name} ${selectedParticipant.last_name}`}
-                           sx={{ width: 80, height: 80, marginRight: 2 }}
-                        />
-                        <Typography variant="h5">{`${selectedParticipant.first_name} ${selectedParticipant.last_name}`}</Typography>
-                     </Box>
-                  )}
-                  {messages.length > 0 ? (
-                     messages.map((message, index) => (
-                        <Box 
-                           key={index} 
-                           sx={{ 
-                              marginBottom: 2, 
-                              textAlign: message.sender_id === userId ? 'right' : 'left',
-                              maxWidth: '100%',
-                              wordWrap: 'break-word',
-                              alignSelf: message.sender_id === userId ? 'flex-end' : 'flex-start'
-                           }}
-                        >
-                           <Typography variant="body1">{message.message_text}</Typography>
-                           {message.message_image && (
-                              <Box
-                                 component="img"
-                                 src={message.message_image}
-                                 alt="Message Image"
-                                 sx={{ maxWidth: '100%', maxHeight: 200, marginTop: 1 }}
-                              />
-                           )}
-                           <Typography variant="body2" color="textSecondary">
-                              {message.sender_id === userId ? 'You' : message.senderName} - {formatDate(message.sent_at)}
-                           </Typography>
-                        </Box>
-                     ))
-                  ) : (
-                     <Typography variant="body1" color="textSecondary">
-                        No messages in this conversation.
-                     </Typography>
-                  )}
-               </Box>
-               
-               <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                  {fileUrl && (
-                     <Box
-                        component="img"
-                        src={fileUrl}
-                        alt="Selected File"
-                        sx={{ maxWidth: '100%', maxHeight: 200, marginBottom: 2 }}
-                     />
-                  )}
-                  <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                     <Button variant="contained" component="label" disabled={!selectedConversation}>
-                        Add File
-                        <input type="file" hidden onChange={handleFileChange} />
-                     </Button>
+            <Box 
+   sx={{ 
+      flex: 1, 
+      display: 'flex', 
+      flexDirection: 'column', 
+      padding: 1, 
+      bgcolor: '#f9f9f9', 
+      borderRadius: 2, 
+      boxShadow: 2 
+   }}
+>
+   {/* Participant Header */}
+   {selectedParticipant && (
+      <Box 
+         sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            padding: 2, 
+            bgcolor: '#ececec', 
+            borderRadius: 2, 
+            marginBottom: 2,
+            boxShadow: 1 
+         }}
+      >
+         <Box
+            component="img"
+            src={selectedParticipant.profile_pic}
+            alt={`${selectedParticipant.first_name} ${selectedParticipant.last_name}`}
+            sx={{ 
+               width: 60, 
+               height: 60, 
+               borderRadius: '50%', 
+               marginRight: 2, 
+               border: '2px solid #ccc' 
+            }}
+         />
+         <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#333' }}>
+            {`${selectedParticipant.first_name} ${selectedParticipant.last_name}`}
+         </Typography>
+      </Box>
+   )}
+
+   {/* Chat Messages */}
+   <Box 
+   sx={{ 
+      flex: 1, 
+      overflowY: 'auto', 
+      padding: 2, 
+      background: 'linear-gradient(to bottom, #CDC1FF,rgb(244, 242, 247))', // Purple gradient
+      borderRadius: 2, 
+      boxShadow: 1 
+   }}
+
+
+   >
+      {messages.length > 0 ? (
+         messages.map((message, index) => (
+            <Box
+            key={index}
+            sx={{
+               marginBottom: 3,
+               maxWidth: '50%',
+               padding: 2,
+               borderRadius: 2,
+               backgroundColor: message.sender_id === userId ? 'white' : '#E5D9F2', 
+               alignSelf: message.sender_id === userId ? 'flex-end' : 'flex-start',
+               textAlign: message.sender_id === userId ? 'right' : 'left',
+               boxShadow: 1,
+            }}
+         >
+            {/* Message Text */}
+            <Typography variant="body1" sx={{ color: '#333' }}>
+               {message.message_text}
+            </Typography>
+         
+            {/* Optional Image */}
+            {message.message_image && (
+               <Box
+                  component="img"
+                  src={message.message_image}
+                  alt="Message Image"
+                  sx={{
+                     maxWidth: '100%',
+                     maxHeight: 200,
+                     marginTop: 1,
+                     borderRadius: 2,
+                     boxShadow: 1,
+                  }}
+               />
+            )}
+         
+            {/* Message Metadata */}
+            <Typography 
+               variant="body2" 
+               sx={{ marginTop: 1, color: '#6F5EFFF' }}
+            >
+               {message.sender_id === userId ? 'You' : message.senderName} - {formatDate(message.sent_at)}
+            </Typography>
+         </Box>         
+         ))
+      ) : (
+         <Typography variant="body1" align="center" sx={{ color: '#999', marginTop: 50 }}>
+            No messages yet.
+         </Typography>
+      )}
+   </Box>
+                                 
+                                 <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                                    {fileUrl && (
+                                       <Box
+                                          component="img"
+                                          src={fileUrl}
+                                          alt="Selected File"
+                                          sx={{ maxWidth: '100%', maxHeight: 200, marginBottom: 2 }}
+                                       />
+                                    )}
+                                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                      <TextField
                         fullWidth
                         variant="outlined"
@@ -356,13 +435,48 @@ const UserMessages = () => {
                         placeholder="Type a message"
                         disabled={!selectedConversation}
                         multiline
-                        rows={2}
+                        rows={3}
+                        borderRadius= {5}
                      />
-                     <Button 
-                        variant="contained" 
-                        color="primary" 
-                        onClick={handleSendMessage} 
+                     <Button
+                        variant="contained"
+                        component="label"
                         disabled={!selectedConversation}
+                        sx={{
+                              backgroundColor: '#6a1b9a',
+                              color: '#fff',
+                              '&:hover': {
+                                 backgroundColor: '#4a148c',
+                              },
+                              borderRadius: '20px',
+                              padding: '5px 20px',
+                              fontSize: '16px',
+                              fontWeight: 'bold',
+                              textTransform: 'none',
+                              marginLeft: '10px',
+                        }}
+                     >
+                        Add File
+                        <input type="file" hidden onChange={handleFileChange} />
+                     </Button>
+                     <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSendMessage}
+                        disabled={!selectedConversation}
+                        sx={{
+                              backgroundColor: '#6a1b9a',
+                              color: '#fff',
+                              '&:hover': {
+                                 backgroundColor: '#4a148c',
+                              },
+                              borderRadius: '20px',
+                              padding: '20px 20px',
+                              fontSize: '16px',
+                              fontWeight: 'bold',
+                              textTransform: 'none',
+                              marginLeft: '10px',
+                        }}
                      >
                         Send
                      </Button>
