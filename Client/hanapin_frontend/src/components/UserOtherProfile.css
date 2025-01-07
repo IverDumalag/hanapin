@@ -1,0 +1,171 @@
+/* General Layout */
+.usp-body-container {
+   background-color: white !important;
+   min-height: 0 !important;
+}
+
+.usp-main-content {
+   margin-top: 50px !important;
+   display: flex !important;
+}
+
+.usp-content-box {
+   flex: 1 !important;
+   padding: 16px !important;
+   display: flex !important;
+   align-items: center !important;
+   justify-content: center !important;
+}
+
+.usp-inner-content {
+   width: 80% !important;
+   background-color: white !important;
+   border-radius: 12px !important;
+   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1) !important;
+   padding: 24px !important;
+}
+
+/* User Profile Card */
+.usp-profile-card {
+   background-color: #F2F2F2 !important;
+   border-radius: 12px !important;
+   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1) !important;
+   padding: 24px !important;
+   margin-top: 16px !important;
+   display: flex !important;
+   flex-direction: column !important;
+   gap: 16px !important;
+}
+
+.usp-profile-header {
+   font-weight: bold !important;
+   margin-bottom: 16px !important;
+}
+
+.usp-profile-picture {
+   width: 200px !important;
+   height: 200px !important;
+   object-fit: cover !important;
+   border-radius: 0px !important;
+}
+
+.usp-profile-name {
+   font-size: 48px !important;
+   font-weight: bold !important;
+   font-family: 'Times New Roman', Times, serif !important;
+}
+
+.usp-profile-info {
+   display: flex !important;
+   gap: 16px !important;
+   align-items: center !important;
+}
+
+.usp-profile-actions {
+   display: flex !important;
+   gap: 8px !important;
+   align-self: flex-end !important;
+}
+
+.usp-profile-actions-btn {
+   text-transform: none !important;
+   background-color: #BA96DD !important;
+   margin-left: auto !important;
+}
+
+/* Post Content */
+.usp-post-container {
+   margin-top: 30px !important;
+   padding: 16px !important;
+   border: 1px solid #e0e0e0 !important;
+   background-color: #F4E9FF !important;
+   border-radius: 8px !important;
+}
+
+.usp-post-header {
+   display: flex !important;
+   align-items: center !important;
+   gap: 16px !important;
+}
+
+.usp-post-header img {
+   width: 50px !important;
+   height: 50px !important;
+   border-radius: 50% !important;
+   cursor: pointer !important;
+}
+
+.usp-post-content {
+   margin-top: 16px !important;
+}
+
+.usp-post-thumbnail {
+   margin-top: 16px !important;
+   display: flex !important;
+   justify-content: center !important;
+}
+
+.usp-post-thumbnail img {
+   border-radius: 8px !important;
+   width: 100% !important;
+   height: auto !important;
+   cursor: pointer !important;
+}
+
+/* Modal Styles */
+.usp-modal-container {
+   position: absolute !important;
+   top: 50% !important;
+   left: 50% !important;
+   transform: translate(-50%, -50%) !important;
+   background-color: white !important;
+   border: 2px solid #000 !important;
+   box-shadow: 24px 24px 48px rgba(0, 0, 0, 0.2) !important;
+   padding: 32px !important;
+}
+
+.usp-modal-large {
+   width: 900px !important;
+}
+
+.usp-modal-small {
+   width: 400px !important;
+}
+
+.usp-modal-content {
+   max-height: 400px !important;
+   overflow-y: auto !important;
+   margin-top: 16px !important;
+}
+
+.usp-comment-input {
+   margin-top: 16px !important;
+}
+
+.usp-comment-actions {
+   display: flex !important;
+   justify-content: flex-end !important;
+   margin-top: 16px !important;
+}
+
+.usp-comment-image {
+   max-width: 100% !important;
+   max-height: 100px !important;
+   margin-bottom: 16px !important;
+   margin-top: 16px !important;
+}
+
+/* Buttons */
+.usp-button {
+   text-transform: none !important;
+   background-color: #BA96DD !important;
+   color: white !important;
+   padding: 10px 20px !important;
+   border-radius: 5px !important;
+   font-size: 15px !important;
+   width: 300px !important;
+}
+
+.usp-button:hover {
+   background-color: #AFB0CE !important;
+}

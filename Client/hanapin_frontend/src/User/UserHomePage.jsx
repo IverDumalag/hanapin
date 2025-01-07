@@ -478,7 +478,7 @@ const UserHomePage = () => {
                                  </Typography>
                               </div>
                               <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-                                 <Button variant="contained" color="primary" onClick={() => handleOpenCommentModal(post.post_id)}>
+                                 <Button variant="contained" sx={{backgroundColor:'#BA96DD'}} onClick={() => handleOpenCommentModal(post.post_id)}>
                                     Comment
                                  </Button>
                               </div>
@@ -610,7 +610,7 @@ const UserHomePage = () => {
                <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
                   
                   <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                     <Button variant="contained" component="label">
+                     <Button variant="contained" component="label" sx={{ backgroundColor:'#AFB0CE' }}>
                         Add File
                      <input type="file" hidden onChange={handleCommentFileChange} />
                      </Button>
@@ -620,7 +620,7 @@ const UserHomePage = () => {
                      color="primary"
                      onClick={handlePostComment}
                      sx={{
-                        backgroundColor: '#ff6584',
+                        backgroundColor: '#AFB0CE',
                         color: '#fff',
                         padding: '8px 16px',
                         fontSize: '14px',
