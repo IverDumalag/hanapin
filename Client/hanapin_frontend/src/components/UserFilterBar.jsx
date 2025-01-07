@@ -98,6 +98,7 @@ const UserFilterBar = ({ onFilter }) => {
                <ListItem>
                   <Button variant="contained" color="primary" fullWidth onClick={handleFilter}>
                      Apply Filters
+
                   </Button>
                </ListItem>
                <ListItem>

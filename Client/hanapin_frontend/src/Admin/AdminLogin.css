@@ -1,4 +1,4 @@
-.hanapin-login-page {
+.hanapin-admin-login-page {
    position: relative;
    width: 99vw;
    height: 98vh;
@@ -15,20 +15,19 @@
 .login-form {
    position: absolute;
    font-family: Arial;
-   top: 200px;
-   left: 610px;
+   top: 50%;
+   left: 50%;
    z-index: 1;
    background: rgba(255, 255, 255, 0.3); 
    border-radius: 15px;
    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); 
    backdrop-filter: blur(25px);
    -webkit-backdrop-filter: blur(10px);
-   padding: 90px 50px;
+   padding: 40px 30px;
    max-width: 400px;
    width: 100%;
    text-align: center;
-   transform: translateX(-60%) scale(1);
-   transform-origin: 0 0;
+   transform: translate(-50%, -50%);
 }
 
 .login-form h1 {
@@ -43,18 +42,18 @@
    text-align: center;
    font-weight: bolder;
    width: 100%;
-   margin: 10px 5px;
+   margin: 10px 0;
    cursor: pointer;
    border-radius: 12px;
    font-weight: lighter; 
-   font-size: 30px;
+   font-size: 20px;
 }
 
 .email-input input,
 .password-input input {
    color: #678679;
-   padding: 20px;
-   width: 90%;
+   padding: 10px;
+   width: 100%;
    margin: 10px 0;
    border: 1px solid #ccc;
    border-radius: 8px;  

@@ -1,17 +1,163 @@
-.bg {
-   background-image: url('assets/BG TEMPLATE.png');
-   background-size: cover;
+.hanapin-register-page {
+   display: flex;
+   justify-content: center;
+   align-items: center;
    width: 100vw;
    height: 100vh;
-   position: absolute;
-   top: 0;
-   left: 0;
-   z-index: -1;
+   background: linear-gradient(to bottom right, #f0f5ff, #cce7ff);
+   font-family: "Arial", sans-serif;
+ }
+ 
+ .register-form-container {
+   background: rgba(255, 255, 255, 0.95);
+   border-radius: 10px;
+   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+   padding: 20px;
+   max-width: 500px;
+   width: 90%;
+   text-align: center;
+ }
+
+ .form-container {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   grid-template-rows: repeat(5, auto);
+   height: 60%;
+   gap: 30px;
+   background: rgba(255, 255, 255, 0.1);
+   backdrop-filter: blur(10px);
+   border-radius: 10px;
+   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+   padding: 40px;
 }
 
-.container {
-   position: relative;
-   z-index: 1;
-   padding: 20px;
-   font-family: 'Inter, sans-serif';
+.FIRSTNAME,
+.MIDDLENAME,
+.LASTNAME,
+.EXTENSION,
+.EMAIL,
+.PASSWORD,
+.DATE_OF_BIRTH,
+.SEXq,
+.HOUSENUMBER,
+.STREET,
+.SUBDIVISION,
+.BARANGAY,
+.CITYMUNICIPALITY,
+.PROVINCE,
+.POSTALCODE {
+   display: flex;
+   flex-direction: column;
+   text-align: left;
+}
+
+.FIRSTNAME label,
+.MIDDLENAME label,
+.LASTNAME label,
+.EXTENSION label,
+.EMAIL label,
+.PASSWORD label,
+.DATE_OF_BIRTH label,
+.SEXq label,
+.HOUSENUMBER label,
+.STREET label,
+.SUBDIVISION label,
+.BARANGAY label,
+.CITYMUNICIPALITY label,
+.PROVINCE label,
+.POSTALCODE label {
+   margin-bottom: 5px;
+   color: #707070;
+}
+
+.FIRSTNAME input,
+.MIDDLENAME input,
+.LASTNAME input,
+.EXTENSION input,
+.EMAIL input,
+.PASSWORD input,
+.DATE_OF_BIRTH input,
+.SEXq select,
+.HOUSENUMBER input,
+.STREET input,
+.SUBDIVISION input,
+.BARANGAY input,
+.CITYMUNICIPALITY input,
+.PROVINCE input,
+.POSTALCODE input {
+   padding: 10px;
+   background-color: #FFFFFF;
+   border: 1px solid #AFB0CE;
+   border-radius: 5px;
+   padding: 15px;
+   font-size: 1rem;
+}
+
+.register-button {
+   background-color: #AFB0CE;
+   color: white;
+   padding: 15px 20px;
+   border: 1px solid #000000;
+   border-radius: 5px;
+   cursor: pointer;
+   font-size: 1.3rem;
+   transition: background-color 0.3s ease;
+}
+
+.register-button:hover {
+   background-color: #AFB0CE;
+}
+
+.gobacktologin {
+   padding: 15px;
+   width: 200px;
+   text-align: center;
+   font-family: 'Arial', sans-serif;
+   background-color: #AFB0CE;
+   color: #FFFFFF;
+   border: none;
+   border-radius: 5px;
+   cursor: pointer;
+   margin-top: 10px;
+   margin-right: 76rem;
+   font-size: 1rem;
+   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.gobacktologin:hover {
+   background-color: #BA96DD;
+}
+
+.PROFILEPIC label {
+   margin-bottom: 5px;
+   color: #707070;
+}
+
+.PROFILEPIC img {
+   width: 100px;
+   height: 100px;
+   border-radius: 50%;
+   object-fit: cover;
+   object-position: top center;
+   margin-top: 10px;
+}
+
+.file {
+   padding: 10px;
+   border: 1px solid #c5c5c5;
+   border-radius: 5px;
+   font-size: 1rem;
+   cursor: pointer;
+   background-color: #f9f9f9;
+   transition: background-color 0.3s ease;
+}
+
+.file:hover {
+   background-color: #e6e6e6;
+}
+
+.clear-button {
+   color: white;
+   cursor: pointer;
+   font-size: 1.3rem;
 }
