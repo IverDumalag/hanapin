@@ -96,13 +96,13 @@ const UserFilterBar = ({ onFilter }) => {
                   </FormControl>
                </ListItem>
                <ListItem>
-                  <Button variant="contained" color="primary" fullWidth onClick={handleFilter}>
+                  <Button variant="contained" sx={{backgroundColor:'#BA96DD', color:'black'}} fullWidth onClick={handleFilter}>
                      Apply Filters
 
                   </Button>
                </ListItem>
                <ListItem>
-                  <Button variant="outlined" color="secondary" fullWidth onClick={handleClear}>
+                  <Button variant="outlined" sx={{borderColor:'#BA96DD', color:'black'}} fullWidth onClick={handleClear}>
                      Clear Filters
                   </Button>
                </ListItem>
