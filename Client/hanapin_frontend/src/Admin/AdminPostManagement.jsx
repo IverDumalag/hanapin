@@ -20,10 +20,10 @@ const AdminPostManagement = () => {
 
    const fetchPosts = async () => {
       try {
-         const response = await axios.get('http://localhost/hanapin/Client/hanapin_backend/api/readUserPost.php');
+         const response = await axios.get(import.meta.env.VITE_API_READ_USER_POST);
          if (response.data.status === 200) {
             const postsWithUserDetails = await Promise.all(response.data.posts.map(async (post) => {
-               const userResponse = await axios.post('http://localhost/hanapin/Client/hanapin_backend/api/readUserByID.php', { user_id: post.user_id });
+               const userResponse = await axios.post(import.meta.env.VITE_API_READ_USER_BY_ID, { user_id: post.user_id });
                if (userResponse.data.status === 200) {
                   return { ...post, user_name: `${userResponse.data.user.first_name} ${userResponse.data.user.last_name}` };
                } else {
@@ -46,7 +46,7 @@ const AdminPostManagement = () => {
 
    const handleDeletePost = async () => {
       try {
-         const response = await axios.post('http://localhost/hanapin/Client/hanapin_backend/api/deletePost.php', { post_id: postToDelete });
+         const response = await axios.post(import.meta.env.VITE_API_DELETE_POST, { post_id: postToDelete });
          if (response.data.status === 200) {
             setPosts(posts.filter(post => post.post_id !== postToDelete));
             setDeleteModalOpen(false);
@@ -79,7 +79,7 @@ const AdminPostManagement = () => {
          <AdminToolBar>
             <div className="post-welcome-admin">
                <h1>Welcome Mr. {userAdminData.last_name}!</h1>
-               <p>{`Today is ${new Date().toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`}</p>
+               <p className="post-welcome-date">{`Today is ${new Date().toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`}</p>
             </div>
             <h1>Admin Post Management</h1>
             <table className="admin-post-management-table" border="1" cellPadding="10" cellSpacing="0">
@@ -104,8 +104,8 @@ const AdminPostManagement = () => {
                         <td>{post.content_state}</td>
                         <td>{new Date(post.post_date).toLocaleString()}</td>
                         <td>
-                           <button onClick={() => handleViewPost(post)}>View</button>
-                           <button onClick={() => handleOpenDeleteModal(post.post_id)}>Delete</button>
+                           <button className='view-btn' onClick={() => handleViewPost(post)}>View</button>
+                           <button className='delete-btn' onClick={() => handleOpenDeleteModal(post.post_id)}>Delete</button>
                         </td>
                      </tr>
                   ))}
@@ -116,7 +116,7 @@ const AdminPostManagement = () => {
                <Box className="modal-box">
                   {selectedPost && (
                      <>
-                        <Typography variant="h6">Post Details</Typography>
+                        <Typography variant="h6" className="modal-title">Post Details</Typography>
                         <Typography variant="body1"><strong>Post ID:</strong> {selectedPost.post_id}</Typography>
                         <Typography variant="body1"><strong>User Name:</strong> {selectedPost.user_name}</Typography>
                         <Typography variant="body1"><strong>Content:</strong> {selectedPost.content_text}</Typography>
@@ -126,7 +126,7 @@ const AdminPostManagement = () => {
                         <Typography variant="body1"><strong>Last Location:</strong> {`${selectedPost.last_street}, ${selectedPost.last_subdivision}, ${selectedPost.last_barangay}`}</Typography>
                         <Typography variant="body1"><strong>State:</strong> {selectedPost.content_state}</Typography>
                         <Typography variant="body1"><strong>Post Date:</strong> {new Date(selectedPost.post_date).toLocaleString()}</Typography>
-                        <Button variant="contained" color="primary" onClick={handleCloseViewModal} sx={{ mt: 2 }}>Close</Button>
+                        <Button variant="contained" color="primary" onClick={handleCloseViewModal} className="close-btn">Close</Button>
                      </>
                   )}
                </Box>
@@ -134,10 +134,13 @@ const AdminPostManagement = () => {
 
             <Modal open={deleteModalOpen} onClose={handleCloseDeleteModal}>
                <Box className="modal-box">
-                  <Typography variant="h6">Confirm Deletion</Typography>
+                  <Typography variant="h6" className="modal-title">Confirm Deletion</Typography>
                   <Typography variant="body1">Are you sure you want to delete this post?</Typography>
-                  <Button variant="contained" color="secondary" onClick={handleDeletePost} sx={{ mt: 2 }}>Yes</Button>
-                  <Button variant="contained" onClick={handleCloseDeleteModal} sx={{ mt: 2 }}>No</Button>
+                  <div className="button-container">
+                  <Button variant="contained" color="secondary" onClick={handleDeletePost} className="confirm-btn">Yes</Button>
+                  <Button variant="contained" onClick={handleCloseDeleteModal} className="cancel-btn">No</Button>
+                  </div>
+                  
                </Box>
             </Modal>
          </AdminToolBar>

@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Box, Button, List, ListItem, Typography, TextField } from '@mui/material';
 import userLoginData from '../../../../Client/hanapin_backend/data/UserLoginData';
 import axios from 'axios';
+import './UserMessages.css';
 
 const UserMessages = () => {
    const [conversations, setConversations] = useState([]);
@@ -30,7 +31,7 @@ const UserMessages = () => {
 
    const fetchConversations = async () => {
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/readConversationEntry.php', {
+         const response = await fetch(import.meta.env.VITE_API_READ_CONVERSATION_ENTRY, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -65,7 +66,7 @@ const UserMessages = () => {
 
    const fetchUserById = async (userId) => {
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/readUserByID.php', {
+         const response = await fetch(import.meta.env.VITE_API_READ_USER_BY_ID, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -87,7 +88,7 @@ const UserMessages = () => {
 
    const fetchLatestMessage = async (conversationId) => {
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/readConversationContent.php', {
+         const response = await fetch(import.meta.env.VITE_API_READ_CONVERSATION_CONTENT, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -109,7 +110,7 @@ const UserMessages = () => {
 
    const fetchMessages = async (conversationId) => {
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/readConversationContent.php', {
+         const response = await fetch(import.meta.env.VITE_API_READ_CONVERSATION_CONTENT, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -156,7 +157,7 @@ const UserMessages = () => {
       };
 
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/createConversationContent.php', {
+         const response = await fetch(import.meta.env.VITE_API_CREATE_CONVERSATION_CONTENT, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -231,24 +232,31 @@ const UserMessages = () => {
    );
 
    return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-         <Box sx={{ display: 'flex', flex: 1 }}>
-            <Box sx={{ width: '30%', borderRight: '1px solid #e0e0e0', overflowY: 'auto' }}>
+      <Box className="um-container">
+         <Box className="um-inner-container">
+            <Box className="um-conversations-list" sx={{ overflowY: 'auto', maxHeight: '100vh' }}>
+               <Box className="um-header">
+                  <Typography variant="h4">Chats</Typography>
+                  <Button
+                     variant="contained"
+                     onClick={() => navigate('/user_home_page')}
+                     className="um-back-button"
+                  >
+                     Back to Home
+                  </Button>
+               </Box>
                <List>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: 2, bgcolor: 'lightgrey' }}>
-                     <Typography variant="h5">Chat</Typography>
+                  <Box className="um-search-box">
                      <TextField
                         variant="outlined"
-                        placeholder="Search person"
+                        placeholder="Search"
                         fullWidth
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        sx={{ marginLeft: 2 }}
+                        className="um-search-input"
                      />
-                     <Button variant="contained" color="primary" onClick={() => navigate('/user_home_page')}>
-                        Back to Home
-                     </Button>
                   </Box>
+                  <br></br>
                   {filteredConversations.map((conversation) => (
                      <ListItem
                         button
@@ -257,28 +265,18 @@ const UserMessages = () => {
                            setSelectedConversation(conversation.conversation_id);
                            fetchMessages(conversation.conversation_id);
                         }}
+                        className="um-conversation-item"
                      >
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Box className="um-conversation-details">
                            <Box
                               component="img"
                               src={conversation.participant.profile_pic}
                               alt={`${conversation.participant.first_name} ${conversation.participant.last_name}`}
-                              sx={{ width: 40, height: 40, borderRadius: '50%', marginRight: 2 }}
+                              className="um-conversation-avatar"
                            />
-                           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                              <Box sx={{ fontWeight: 'bold' }}>{`${conversation.participant.first_name} ${conversation.participant.last_name}`}</Box>
-                              <Box
-                                 sx={{
-                                    color: 'gray',
-                                    display: '-webkit-box',
-                                    WebkitBoxOrient: 'vertical',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    WebkitLineClamp: 2,
-                                    lineClamp: 2,
-                                    maxHeight: '3em'
-                                 }}
-                              >
+                           <Box className="um-conversation-text">
+                              <Box className="um-conversation-name">{`${conversation.participant.first_name} ${conversation.participant.last_name}`}</Box>
+                              <Box className="um-conversation-message">
                                  {conversation.latestMessage}
                               </Box>
                            </Box>
@@ -287,82 +285,86 @@ const UserMessages = () => {
                   ))}
                </List>
             </Box>
-            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', padding: 2 }}>
-               <Box sx={{ flex: 1, overflowY: 'auto', marginBottom: 2 }}>
-                  {selectedParticipant && (
-                     <Box sx={{ display: 'flex', padding: 2, bgcolor: 'lightgrey', alignItems: 'center' }}>
-                        <Box
-                           component="img"
-                           src={selectedParticipant.profile_pic}
-                           alt={`${selectedParticipant.first_name} ${selectedParticipant.last_name}`}
-                           sx={{ width: 80, height: 80, marginRight: 2 }}
-                        />
-                        <Typography variant="h5">{`${selectedParticipant.first_name} ${selectedParticipant.last_name}`}</Typography>
-                     </Box>
-                  )}
+            <Box className="um-chat-box" sx={{ overflowY: 'auto', maxHeight: '100vh' }}>
+               {selectedParticipant && (
+                  <Box className="um-participant-header">
+                     <Box
+                        component="img"
+                        src={selectedParticipant.profile_pic}
+                        alt={`${selectedParticipant.first_name} ${selectedParticipant.last_name}`}
+                        className="um-participant-avatar"
+                     />
+                     <Typography variant="h5" className="um-participant-name">
+                        {`${selectedParticipant.first_name} ${selectedParticipant.last_name}`}
+                     </Typography>
+                  </Box>
+               )}
+               <Box className="um-messages-box">
                   {messages.length > 0 ? (
                      messages.map((message, index) => (
-                        <Box 
-                           key={index} 
-                           sx={{ 
-                              marginBottom: 2, 
-                              textAlign: message.sender_id === userId ? 'right' : 'left',
-                              maxWidth: '100%',
-                              wordWrap: 'break-word',
-                              alignSelf: message.sender_id === userId ? 'flex-end' : 'flex-start'
-                           }}
+                        <Box
+                           key={index}
+                           className={`um-message ${message.sender_id === userId ? 'um-message-sent' : 'um-message-received'}`}
                         >
-                           <Typography variant="body1">{message.message_text}</Typography>
+                           <Typography variant="body1" className="um-message-text">
+                              {message.message_text}
+                           </Typography>
                            {message.message_image && (
                               <Box
                                  component="img"
                                  src={message.message_image}
                                  alt="Message Image"
-                                 sx={{ maxWidth: '100%', maxHeight: 200, marginTop: 1 }}
+                                 className="um-message-image"
                               />
                            )}
-                           <Typography variant="body2" color="textSecondary">
+                           <Typography variant="body2" className="um-message-metadata">
                               {message.sender_id === userId ? 'You' : message.senderName} - {formatDate(message.sent_at)}
                            </Typography>
                         </Box>
                      ))
                   ) : (
-                     <Typography variant="body1" color="textSecondary">
-                        No messages in this conversation.
+                     <Typography variant="body1" align="center" className="um-no-messages">
+                        No messages yet.
                      </Typography>
                   )}
                </Box>
-               
-               <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-                  {fileUrl && (
-                     <Box
-                        component="img"
-                        src={fileUrl}
-                        alt="Selected File"
-                        sx={{ maxWidth: '100%', maxHeight: 200, marginBottom: 2 }}
-                     />
-                  )}
-                  <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                     <Button variant="contained" component="label" disabled={!selectedConversation}>
-                        Add File
-                        <input type="file" hidden onChange={handleFileChange} />
-                     </Button>
+               {fileUrl && (
+                  <Box
+                     component="img"
+                     src={fileUrl}
+                     alt="Selected File"
+                     className="um-selected-file"
+                  />
+               )}
+               <Box className="um-message-input-container">
+                  <Box className="um-message-input-box">
                      <TextField
                         fullWidth
                         variant="outlined"
                         size="small"
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
-                        placeholder="Type a message"
+                        placeholder="Type your message here..."
                         disabled={!selectedConversation}
                         multiline
-                        rows={2}
+                        rows={3}
+                        className="um-message-input"
                      />
-                     <Button 
-                        variant="contained" 
-                        color="primary" 
-                        onClick={handleSendMessage} 
+                     <Button
+                        variant="contained"
+                        component="label"
                         disabled={!selectedConversation}
+                        className="um-add-file-button"
+                     >
+                        Add File
+                        <input type="file" hidden onChange={handleFileChange} />
+                     </Button>
+                     <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSendMessage}
+                        disabled={!selectedConversation}
+                        className="um-send-button"
                      >
                         Send
                      </Button>

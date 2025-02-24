@@ -7,6 +7,7 @@ import { Box, Button, TextField, Typography, Modal } from '@mui/material';
 import UserMessagePreview from '../components/UserMessagePreview';
 import userLoginData from '../../../../Client/hanapin_backend/data/UserLoginData';
 import axios from 'axios';
+import './UserOtherProfile.css';
 
 const UserOtherProfile = () => {
    const { userId } = useParams();
@@ -29,7 +30,7 @@ const UserOtherProfile = () => {
 
    const fetchUserData = async (userId) => {
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/readUserByID.php', {
+         const response = await fetch(import.meta.env.VITE_API_READ_USER_BY_ID, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -49,11 +50,11 @@ const UserOtherProfile = () => {
 
    const fetchPosts = async (userId) => {
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/readUserPost.php');
+         const response = await fetch(import.meta.env.VITE_API_READ_USER_POST);
          const data = await response.json();
          if (response.ok) {
             const postsWithUserDetails = await Promise.all(data.posts.map(async (post) => {
-               const userResponse = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/readUserByID.php', {
+               const userResponse = await fetch(import.meta.env.VITE_API_READ_USER_BY_ID, {
                   method: 'POST',
                   headers: {
                      'Content-Type': 'application/json',
@@ -83,7 +84,7 @@ const UserOtherProfile = () => {
 
    const handleDeletePost = async (postId) => {
       try {
-         const response = await fetch(`http://localhost/hanapin/Client/hanapin_backend/api/deleteUserPost.php`, {
+         const response = await fetch(import.meta.env.VITE_API_DELETE_POST, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -119,7 +120,7 @@ const UserOtherProfile = () => {
             participant_two: userData.user_id,
          };
    
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/createConversationEntry.php', {
+         const response = await fetch(import.meta.env.VITE_API_CREATE_CONVERSATION_ENTRY, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -185,7 +186,7 @@ const UserOtherProfile = () => {
 
    const fetchComments = async (postId) => {
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/readPostComment.php', {
+         const response = await fetch(import.meta.env.VITE_API_READ_POST_COMMENT, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -215,7 +216,7 @@ const UserOtherProfile = () => {
 
       try {
          console.log(commentData);
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/createPostComment.php', {
+         const response = await fetch(import.meta.env.VITE_API_CREATE_POST_COMMENT, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -276,67 +277,36 @@ const UserOtherProfile = () => {
 
    return (
       <>
-         <Box sx={{ bgcolor: 'lightgrey', minHeight: '100vh' }}>
+         <div className="usp-body-container"></div>
             <UserToolBar onSearch={handleSearch} />
-            <Box sx={{ marginTop: '64px', display: 'flex' }}>
+            <div className="usp-main-content">
                <UserFilterBar onFilter={handleFilter} />
-               <Box
-                  sx={{
-                     flex: 1,
-                     padding: 2,
-                     display: 'flex',
-                     alignItems: 'center',
-                     justifyContent: 'center',
-                  }}
-               >
-                  <Box
-                     width="70%"
-                     sx={{
-                        bgcolor: 'lightgrey',
-                        borderRadius: 3,
-                        boxShadow: 2,
-                        p: 3,
-                     }}
-                  >
-                     <Box
-                        sx={{
-                           bgcolor: 'white',
-                           borderRadius: 3,
-                           boxShadow: 2,
-                           p: 3,
-                           mt: 2,
-                           display: 'flex',
-                           flexDirection: 'column',
-                           gap: 2,
-                        }}
-                     >
-                        <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
+               <div className="usp-content-box">
+                  <div className="usp-inner-content">
+                     <div className="usp-profile-card">
+                        {/* <Typography variant="h5" className="usp-profile-header">
                            User Profile
-                        </Typography>
-                        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                        </Typography> */}
+                        <div className="usp-profile-info">
                            <img
                               src={userData?.profile_pic || 'https://via.placeholder.com/100'}
                               alt="Profile"
-                              style={{
-                                 width: 100,
-                                 height: 100,
-                                 borderRadius: '50%',
-                              }}
+                              className="usp-profile-picture"
                            />
-                           <Box>
-                              <Typography variant="h6">
+                           <div>
+                              <Typography variant="h6" className="usp-profile-name">
                                  {`${userData?.first_name || ''} ${userData?.middle_name || ''} ${userData?.last_name || ''} ${userData?.extension || ''}`.trim()}
                               </Typography>
-                              <Typography variant="body1" color="textSecondary">
+                              {/* <Typography variant="body1" color="textSecondary">
                                  {userData?.email || 'Email Address'}
-                              </Typography>
-                           </Box>
-                        </Box>
-                        <Box sx={{ display: 'flex', gap: 1, alignSelf: 'flex-end' }}>
+                              </Typography> */}
+                           </div>
+                        </div>
+                        <div className="usp-profile-actions">
                            <Button
                               variant="contained"
                               color="secondary"
-                              sx={{ textTransform: 'none' }}
+                              className="usp-button"
                               onClick={handleOpenMessageModal}
                            >
                               Message
@@ -345,15 +315,19 @@ const UserOtherProfile = () => {
                               variant="contained"
                               color="primary"
                               onClick={() => setViewProfile(true)}
-                              sx={{ textTransform: 'none' }}
+                              className="usp-button"
                            >
                               View Profile
                            </Button>
-                        </Box>
-                     </Box>
+                        </div>
+                     </div>
+
+                     <h1 className="usp-uop-post-title">
+                        Post
+                     </h1>
 
                      {/* Post Content */}
-                     <Box sx={{ mt: 2 }}>
+                     <div className="usp-outside-post-container">
                         {filteredPosts.length > 0 ? (
                            filteredPosts.map((post, index) => (
                               <PostContent key={index} {...post} onCommentClick={handleOpenCommentModal} onDelete={handleDeletePost} />
@@ -363,12 +337,12 @@ const UserOtherProfile = () => {
                               No posts found.
                            </Typography>
                         )}
-                     </Box>
-                  </Box>
-               </Box>
+                     </div>
+                  </div>
+               </div>
                <UserMessagePreview />
-            </Box>
-         </Box>
+            </div>
+         
 
          <Modal open={viewProfile} onClose={() => setViewProfile(false)}>
             <Box sx={{ ...modalStyle }}>
@@ -468,90 +442,79 @@ const UserOtherProfile = () => {
             </Box>
          </Modal>
 
-
          <Modal open={commentModalOpen} onClose={handleCloseCommentModal}>
-                     <Box sx={{ ...modalStyle, width: 900 }}>
-                        <Typography variant="h6">Comments</Typography>
-                        <Box sx={{ maxHeight: 400, overflowY: 'auto', mt: 2 }}>
-                           {comments.length > 0 ? (
-                              comments.map((comment, index) => (
-                                 <Box key={index} sx={{ mb: 2 }}>
-                                    <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                                       {comment.first_name} {comment.last_name}
-                                    </Typography>
-                                    {comment.comment_image && (
-                                       <Box
-                                       component="img"
-                                       src={comment.comment_image.replace('uc', 'thumbnail')}
-                                       alt="Message Image"
-                                       sx={{ maxWidth: '100%', maxHeight: 200, marginTop: 1 }}
-                                       />
-                                    )}
-                                    <Typography variant="body2">{comment.comment}</Typography>
-                                    <Typography variant="caption" color="textSecondary">
-                                       {new Date(comment.comment_date).toLocaleString()}
-                                    </Typography>
-                                 </Box>
-                              ))
-                           ) : (
-                              <Typography variant="body2" align="center">
-                                 No comments yet.
-                              </Typography>
-                           )}
-                        </Box>
-                        <TextField
-                           fullWidth
-                           variant="outlined"
-                           size="small"
-                           value={newComment}
-                           onChange={(e) => setNewComment(e.target.value)}
-                           placeholder="Write a comment..."
-                           sx={{ mt: 2 }}
-                        />
-                        <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                           {fileUrl && (
+            <Box sx={{ ...modalStyle, width: 900 }}>
+               <Typography variant="h6">Comments</Typography>
+               <Box sx={{ maxHeight: 400, overflowY: 'auto', mt: 2 }}>
+                  {comments.length > 0 ? (
+                     comments.map((comment, index) => (
+                        <Box key={index} sx={{ mb: 2 }}>
+                           <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                              {comment.first_name} {comment.last_name}
+                           </Typography>
+                           {comment.comment_image && (
                               <Box
                                  component="img"
-                                 src={fileUrl}
-                                 alt="Selected File"
-                                 sx={{ maxWidth: '100%', maxHeight: 100, marginBottom: 2 , marginTop: 2}}
+                                 src={comment.comment_image.replace('uc', 'thumbnail')}
+                                 alt="Message Image"
+                                 sx={{ maxWidth: '100%', maxHeight: 200, marginTop: 1 }}
                               />
-                              )}
-                              </Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-                           
-                           <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                              <Button variant="contained" component="label">
-                                 Add File
-                              <input type="file" hidden onChange={handleCommentFileChange} />
-                              </Button>
-                           </Box>
-                           <Button variant="contained" color="primary" onClick={handlePostComment}>
-                              Post Comment
-                           </Button>
+                           )}
+                           <Typography variant="body2">{comment.comment}</Typography>
+                           <Typography variant="caption" color="textSecondary">
+                              {new Date(comment.comment_date).toLocaleString()}
+                           </Typography>
                         </Box>
-                     </Box>
-                  </Modal>
+                     ))
+                  ) : (
+                     <Typography variant="body2" align="center">
+                        No comments yet.
+                     </Typography>
+                  )}
+               </Box>
+               <TextField
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  placeholder="Write a comment..."
+                  sx={{ mt: 2 }}
+               />
+               <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                  {fileUrl && (
+                     <Box
+                        component="img"
+                        src={fileUrl}
+                        alt="Selected File"
+                        sx={{ maxWidth: '100%', maxHeight: 100, marginBottom: 2, marginTop: 2 }}
+                     />
+                  )}
+               </Box>
+               <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                     <Button variant="contained" component="label">
+                        Add File
+                        <input type="file" hidden onChange={handleCommentFileChange} />
+                     </Button>
+                  </Box>
+                  <Button variant="contained" color="primary" onClick={handlePostComment}>
+                     Post Comment
+                  </Button>
+               </Box>
+            </Box>
+         </Modal>
       </>
    );
 };
 
 const PostContent = ({ profile_pic, first_name, last_name, content_text, content_picture, last_street, last_subdivision, last_barangay, content_state, post_date, user_id, post_id, onProfileClick, onCommentClick }) => {
    return (
-      <Box
-         sx={{
-            mt: 4,
-            p: 2,
-            border: '1px solid #e0e0e0',
-            bgcolor: 'white',
-            borderRadius: 2,
-         }}
-      >
-         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+      <div className="usp-post-container">
+         <div className="usp-post-header">
             <img
                src={profile_pic || 'https://via.placeholder.com/50'}
                alt="Profile"
-               style={{ width: 50, height: 50, borderRadius: '50%', cursor: 'pointer' }}
                onClick={() => onProfileClick(user_id)}
             />
             <Typography
@@ -561,37 +524,36 @@ const PostContent = ({ profile_pic, first_name, last_name, content_text, content
             >
                {`${first_name || ''} ${last_name || ''}`.trim()}
             </Typography>
-         </Box>
+         </div>
          
-         <Box sx={{ mt: 2 }}>
+         <div className="usp-post-content">
             <Typography variant="body1">Status: {content_state}</Typography>
             <Typography variant="body1">{content_text}</Typography>
-         </Box>
+         </div>
          {content_picture && (
-            <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
+            <div className="usp-post-thumbnail">
                <img
                   src={content_picture.replace('uc', 'thumbnail')}
                   alt="Post Content Thumbnail"
-                  style={{ borderRadius: 2, width: '100%', height: 'auto', cursor: 'pointer' }}
                   onClick={() => window.open(content_picture.replace('thumbnail', 'uc'), '_blank', 'noopener,noreferrer')}
                />
-            </Box>
+            </div>
          )}
 
-         <Box sx={{ mt: 2 }}>
+         <div className="usp-post-content">
             <Typography variant="body2">
                Last seen at: {last_street ? `${last_street}, ` : ''}{last_subdivision}, {last_barangay}
             </Typography>
             <Typography variant="body2">
                Posted on: {new Date(post_date).toLocaleString()}
             </Typography>
-         </Box>
-         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-            <Button variant="contained" color="primary" onClick={() => onCommentClick(post_id)}>
+         </div>
+         <div className="usp-profile-actions">
+            <Button variant="contained" className='usp-profile-actions-btn' onClick={() => onCommentClick(post_id)}>
                Comment
             </Button>
-         </Box>
-      </Box>
+         </div>
+      </div>
    );
 };
 

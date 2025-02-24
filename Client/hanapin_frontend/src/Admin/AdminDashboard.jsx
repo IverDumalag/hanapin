@@ -5,7 +5,6 @@ import AdminToolBar from '../components/AdminToolBar';
 import './AdminDashboard.css';
 import userSelectAdminData from '../../../../Client/hanapin_backend/data/AdminLoginData';
 
-
 const AdminDashboard = () => {
    const [missingFoundData, setMissingFoundData] = useState([]);
    const [userContributions, setUserContributions] = useState([]);
@@ -21,7 +20,7 @@ const AdminDashboard = () => {
 
    const fetchMissingFoundData = async () => {
       try {
-         const response = await axios.get('http://localhost/hanapin/Client/hanapin_backend/api/joinMissingFoundPerPlace.php');
+         const response = await axios.get(import.meta.env.VITE_API_JOIN_MISSING_FOUND_PER_PLACE);
          if (response.data.status === 200) {
             setMissingFoundData(response.data.results);
          } else {
@@ -34,7 +33,7 @@ const AdminDashboard = () => {
 
    const fetchUserContributions = async () => {
       try {
-         const response = await axios.get('http://localhost/hanapin/Client/hanapin_backend/api/joinUserContribution.php');
+         const response = await axios.get(import.meta.env.VITE_API_JOIN_USER_CONTRIBUTION);
          if (response.data.status === 200) {
             setUserContributions(response.data.contributions);
          } else {
@@ -47,7 +46,7 @@ const AdminDashboard = () => {
 
    const fetchSexDistribution = async () => {
       try {
-         const response = await axios.get('http://localhost/hanapin/Client/hanapin_backend/api/joinSexDistribution.php');
+         const response = await axios.get(import.meta.env.VITE_API_JOIN_SEX_DISTRIBUTION);
          if (response.data.status === 200) {
             setSexDistribution(response.data.distribution);
          } else {
@@ -60,7 +59,7 @@ const AdminDashboard = () => {
 
    const fetchMostEngagedPosts = async () => {
       try {
-         const response = await axios.get('http://localhost/hanapin/Client/hanapin_backend/api/joinMostEngagedPost.php');
+         const response = await axios.get(import.meta.env.VITE_API_JOIN_MOST_ENGAGED_POST);
          if (response.data.status === 200) {
             setMostEngagedPosts(response.data.posts);
          } else {
@@ -76,11 +75,10 @@ const AdminDashboard = () => {
    return (
       <AdminSideBar>
          <AdminToolBar>
-            <div className="dashboard-welcome-admin">
-               <h1>Welcome Mr. {userAdminData.last_name}!</h1>
-               <p>{`Today is ${new Date().toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`}</p>
+            <div className="dashboard-welcome">
+               <h1 className="dashboard-welcome-admin">Welcome Mr. {userAdminData.last_name}!</h1>
+               <p className='dashboard-welcome-date'>{`Today is ${new Date().toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`}</p>
             </div>
-            <h1>Admin Dashboard</h1>
             <div className="dashboard-grid">
                <div className="dashboard-card">
                   <h2>Missing/Found Per Place</h2>
@@ -158,6 +156,7 @@ const AdminDashboard = () => {
                         <tr>
                            <th>Post ID</th>
                            <th>Total Comments</th>
+                           <th>Total Messages</th>
                         </tr>
                      </thead>
                      <tbody>
@@ -165,6 +164,7 @@ const AdminDashboard = () => {
                            <tr key={index}>
                               <td>{item.post_id}</td>
                               <td>{item.total_comments}</td>
+                              <td>{item.total_messages}</td>
                            </tr>
                         ))}
                      </tbody>

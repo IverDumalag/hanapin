@@ -1,0 +1,253 @@
+/* General Layout */
+.um-container {
+   display: flex !important;
+   flex-direction: column !important;
+   height: 100vh !important;
+}
+
+.um-inner-container {
+   display: flex !important;
+   flex: 1 !important;
+   padding: 1rem !important;
+}
+
+.um-conversations-list {
+   width: 25% !important;
+   border-right: 1px solid #e0e0e0 !important;
+   overflow-x: hidden !important;   
+}
+
+.um-header {
+   display: flex !important;
+   justify-content: space-between !important;
+   align-items: center !important;
+   margin-bottom: 2rem !important;
+   margin-top: 2rem !important;
+   margin-right: 2rem !important;
+}
+
+.um-back-button {
+   background-color: #AFB0CE !important;
+   color: #fff !important;
+   border-radius: 10px !important;
+   padding: 10px 20px !important;
+   font-size: 14px !important;
+   font-weight: bold !important;
+   text-transform: none !important;
+}
+
+.um-back-button:hover {
+   background-color: #4a148c !important;
+}
+
+.um-search-box {
+   display: flex !important;
+   justify-content: space-between !important;
+   padding: 1rem !important;
+   background-color: white !important;
+   width: 100% !important;
+}
+
+.um-search-input {
+   margin-right: 2rem !important;
+}
+
+.um-conversation-item {
+   display: flex !important;
+   align-items: center !important;
+}
+
+.um-conversation-details {
+   display: flex !important;
+   align-items: center !important;
+   width: 100% !important;
+   padding: 10px !important;
+   background: linear-gradient(to right, #CDC1FF, rgb(244, 242, 247)) !important;
+}
+
+.um-conversation-avatar {
+   width: 65px !important;
+   height: 65px !important;
+   border-radius: 50% !important;
+   margin-right: 2rem !important;
+}
+
+.um-conversation-text {
+   display: flex !important;
+   flex-direction: column !important;
+}
+
+.um-conversation-name {
+   font-weight: bold !important;
+}
+
+.um-conversation-message {
+   color: gray !important;
+   display: -webkit-box !important;
+   -webkit-box-orient: vertical !important;
+   overflow: hidden !important;
+   text-overflow: ellipsis !important;
+   -webkit-line-clamp: 2 !important;
+   line-clamp: 2 !important;
+   max-height: 3em !important;
+}
+
+.um-chat-box {
+   flex: 1 !important;
+   display: flex !important;
+   flex-direction: column !important;
+   padding: 1rem !important;
+   background-color: #f9f9f9 !important;
+   border-radius: 2rem !important;
+   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1) !important;
+   margin-left: 0px !important;
+   max-height: 850px !important;
+}
+
+.um-participant-header {
+   display: flex !important;
+   align-items: center !important;
+   padding: 2rem !important;
+   background-color: #ececec !important;
+   border-radius: 2rem !important;
+   margin-bottom: 2rem !important;
+   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.um-participant-avatar {
+   width: 100px !important;
+   height: 100px !important;
+   border-radius: 0% !important;
+   margin-right: 2rem !important;
+   border: 2px solid #ccc !important;
+}
+
+.um-participant-name {
+   font-weight: bold !important;
+   color: #333 !important;
+}
+
+.um-messages-box {
+   flex: 1 !important;
+   overflow-y: auto !important;
+   padding: 2rem !important;
+   background: linear-gradient(to top, #CDC1FF, rgb(244, 242, 247)) !important;
+   border-radius: 2rem !important;
+   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.um-message {
+   margin-bottom: 3rem !important;
+   width: fit-content !important;
+   max-width: 60% !important;
+   padding: 2rem !important;
+   border-radius: 2rem !important;
+   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.um-message-sent {
+   background-color: white !important;
+   align-self: flex-end !important;
+   text-align: right !important;
+   margin-left: auto !important;
+}
+
+.um-message-preview {
+   background: linear-gradient(to left, #CDC1FF, rgb(244, 242, 247)) !important;
+   padding: 1rem !important;
+   border-radius: 1rem !important;
+   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1) !important;
+   margin-bottom: 1rem !important;
+}
+
+.um-message-received {
+   background-color: #E5D9F2 !important;
+   align-self: flex-start !important;
+   text-align: left !important;
+   margin-right: auto !important;
+}
+
+
+.um-message-text {
+   color: #333 !important;
+}
+
+.um-message-image {
+   max-width: 100% !important;
+   max-height: 200px !important;
+   margin-top: 1rem !important;
+   border-radius: 2rem !important;
+   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.um-message-metadata {
+   margin-top: 1rem !important;
+   color: #6F5EFF !important;
+}
+
+.um-no-messages {
+   color: #999 !important;
+   margin-top: 50px !important;
+}
+
+.um-message-input-container {
+   display: flex !important;
+   align-items: center !important;
+   margin-top: 0px !important;
+}
+
+.um-selected-file {
+   max-width: 200px !important;
+   max-height: 200px !important;
+   margin-bottom: 2rem !important;
+   display: block !important;
+   margin-left: auto !important;
+   margin-right: auto !important;
+   margin-top: 10px !important;
+   margin-bottom: 5px !important;
+}
+
+.um-message-input-box {
+   display: flex !important;
+   align-items: center !important;
+   width: 100% !important;
+   margin-top: 20px !important;
+}
+
+.um-message-input {
+   border-radius: 5px !important;
+}
+
+.um-add-file-button {
+   background-color: #AFB0CE !important;
+   color: white !important;
+   border-radius: 20px !important;
+   padding: 5px 20px !important;
+   font-size: 16px !important;
+   font-weight: bold !important;
+   text-transform: none !important;
+   margin-left: 10px !important;
+   width: 150px !important;
+   height: 80px !important;
+}
+
+.um-add-file-button:hover {
+   background-color: #4a148c !important;
+}
+
+.um-send-button {
+   background-color: #AFB0CE !important;
+   color: white !important;
+   border-radius: 20px !important;
+   padding: 20px 20px !important;
+   font-size: 16px !important;
+   font-weight: bold !important;
+   text-transform: none !important;
+   margin-left: 10px !important;
+   width: 150px !important;
+   height: 80px !important;
+}
+
+.um-send-button:hover {
+   background-color: #4a148c !important;
+}

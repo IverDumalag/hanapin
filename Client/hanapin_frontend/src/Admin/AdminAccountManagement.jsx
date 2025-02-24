@@ -52,7 +52,7 @@ const AdminAccountManagement = () => {
 
    const fetchUsers = async () => {
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/readAllUser.php');
+         const response = await fetch(import.meta.env.VITE_API_READ_ALL_USER);
          const data = await response.json();
          if (data.status === 200) {
             return data.users;
@@ -68,7 +68,7 @@ const AdminAccountManagement = () => {
 
    const deleteUser = async (userId) => {
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/deleteUserAccount.php', {
+         const response = await fetch(import.meta.env.VITE_API_DELETE_USER_ACCOUNT, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ const AdminAccountManagement = () => {
 
    const createUser = async () => {
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/createUserAccount.php', {
+         const response = await fetch(import.meta.env.VITE_API_CREATE_USER_ACCOUNT, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -191,18 +191,18 @@ const AdminAccountManagement = () => {
       <>
          <AdminSideBar />
          <AdminToolBar />
-         <div className="welcome-admin">
-            <h1>Welcome Mr. {userAdminData.last_name}!</h1>
-            <p>{`Today is ${new Date().toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`}</p>
-         </div>
+         <div className="post-dashboard-welcome">
+               <h1 className="post-dashboard-welcome-admin">Welcome Mr. {userAdminData.last_name}!</h1>
+               <p className='post-dashboard-welcome-date'>{`Today is ${new Date().toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`}</p>
+            </div>
 
          <div className="admin-account-management-container">
             <div className="top-table">
                <h1>Account Table</h1>
-               <button onClick={handleCreateClick}>Add User</button>
+               <button onClick={handleCreateClick} className='acm-btn-adduser'>Add User</button>
             </div>
             
-            <table className="admin-account-management-table" border="1" cellPadding="10" cellSpacing="0">
+            <table className="admin-account-management-table" cellPadding="10" cellSpacing="0">
                <thead>
                   <tr>
                      <th>User Name</th>
@@ -222,7 +222,7 @@ const AdminAccountManagement = () => {
                         <td>{user.created_at}</td>
                         <td>{user.updated_at}</td>
                         <td>
-                           <button onClick={() => handleDeleteClick(user.user_id)}>Delete</button>
+                           <button className='acm-btn-deleteuser' onClick={() => handleDeleteClick(user.user_id) }>Delete</button>
                         </td>
                      </tr>
                   ))}
@@ -256,8 +256,8 @@ const Modal = ({ show, onClose, onConfirm }) => {
          <div className="modal-content">
             <h2>Confirm Deletion</h2>
             <p>Are you sure you want to delete this user?</p>
-            <button onClick={onConfirm}>Yes</button>
-            <button onClick={onClose}>No</button>
+            <button className="confirm" onClick={onConfirm}>Yes</button>
+            <button className="cancel" onClick={onClose}>No</button>
          </div>
       </div>
    );
