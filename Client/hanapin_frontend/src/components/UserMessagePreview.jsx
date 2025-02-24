@@ -20,7 +20,7 @@ const UserMessagePreview = () => {
 
    const getUserMessages = async (userId) => {
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/readConversationEntry.php', {
+         const response = await fetch(import.meta.env.VITE_API_READ_CONVERSATION_ENTRY, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ const UserMessagePreview = () => {
 
    const fetchUserById = async (userId) => {
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/readUserByID.php', {
+         const response = await fetch(import.meta.env.VITE_API_READ_USER_BY_ID, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ const UserMessagePreview = () => {
 
    const fetchLatestMessage = async (conversationId) => {
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/readConversationContent.php', {
+         const response = await fetch(import.meta.env.VITE_API_READ_CONVERSATION_CONTENT, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',

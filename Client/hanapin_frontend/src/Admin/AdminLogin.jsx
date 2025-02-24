@@ -21,7 +21,7 @@ const AdminLogin = () => {
    const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-         const response = await axios.post('http://localhost/hanapin/Client/hanapin_backend/api/adminLogin.php', formData);
+         const response = await axios.post(import.meta.env.VITE_API_ADMIN_LOGIN, formData);
          if (response.data.status === 200) {
             adminLoginData.setData('admin', response.data.user);
             navigate('/admin_dashboard');

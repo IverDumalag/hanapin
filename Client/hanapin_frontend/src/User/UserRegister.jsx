@@ -35,7 +35,7 @@ const UserRegister = () => {
 
    const checkEmailExists = async (email) => {
       try {
-         const response = await axios.post('http://localhost/hanapin/Client/hanapin_backend/api/readUserEmail.php', { email });
+         const response = await axios.post(import.meta.env.VITE_API_READ_USER_EMAIL, { email });
          console.log('checkEmailExists response:', response.data);
          return response.data.status === 200;
       } catch (error) {
@@ -116,7 +116,7 @@ const UserRegister = () => {
       console.log('Submitting form data:', formData);
 
       try {
-         const response = await axios.post('http://localhost/hanapin/Client/hanapin_backend/api/createUserAccount.php', formData);
+         const response = await axios.post(import.meta.env.VITE_API_CREATE_USER_ACCOUNT, formData);
          console.log('Response:', response.data);
          if (response.data.status === 201) {
             console.log('User Created Successfully');
@@ -222,7 +222,17 @@ const UserRegister = () => {
 
                <div className="PASSWORD">
                   <label>Password</label>
-                  <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required minLength="8" />
+                  <input 
+                     type="password" 
+                     name="password" 
+                     placeholder="Password" 
+                     value={formData.password} 
+                     onChange={handleChange} 
+                     required 
+                     minLength="8" 
+                     pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}"
+                     title="Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character."
+                  />
                </div>
 
                <div className="DATE_OF_BIRTH">

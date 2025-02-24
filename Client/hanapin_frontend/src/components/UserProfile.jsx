@@ -37,11 +37,11 @@ const UserProfile = () => {
 
    const fetchPosts = async () => {
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/readUserPost.php');
+         const response = await fetch(import.meta.env.VITE_API_READ_USER_POST);
          const data = await response.json();
          if (response.ok) {
             const postsWithUserDetails = await Promise.all(data.posts.map(async (post) => {
-               const userResponse = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/readUserByID.php', {
+               const userResponse = await fetch(import.meta.env.VITE_API_READ_USER_BY_ID, {
                   method: 'POST',
                   headers: {
                      'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ const UserProfile = () => {
 
    const confirmDeletePost = async () => {
       try {
-         const response = await fetch(`http://localhost/hanapin/Client/hanapin_backend/api/deletePost.php`, {
+         const response = await fetch(import.meta.env.VITE_API_DELETE_POST, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ const UserProfile = () => {
 
    const handleSaveProfile = async () => {
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/updateUserAccount.php', {
+         const response = await fetch(import.meta.env.VITE_API_UPDATE_USER_ACCOUNT, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -228,7 +228,7 @@ const UserProfile = () => {
    
       const fetchComments = async (postId) => {
          try {
-            const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/readPostComment.php', {
+            const response = await fetch(import.meta.env.VITE_API_READ_POST_COMMENT, {
                method: 'POST',
                headers: {
                   'Content-Type': 'application/json',
@@ -258,7 +258,7 @@ const UserProfile = () => {
    
          try {
             console.log(commentData);
-            const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/createPostComment.php', {
+            const response = await fetch(import.meta.env.VITE_API_CREATE_POST_COMMENT, {
                method: 'POST',
                headers: {
                   'Content-Type': 'application/json',
@@ -317,7 +317,7 @@ const UserProfile = () => {
 
    const onFound = async (postId) => {
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/updatePostToFound.php', {
+         const response = await fetch(import.meta.env.VITE_API_UPDATE_POST_TO_FOUND, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',

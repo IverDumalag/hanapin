@@ -12,6 +12,7 @@ import AdminRoutes from '../utils/AdminRoutes';
 import AdminDashboard from './Admin/AdminDashboard';
 import AdminAccountManagement from './Admin/AdminAccountManagement';
 import AdminPostManagement from './Admin/AdminPostManagement';
+import AdminLogs from './Admin/AdminLogs';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
             <Route path="/admin_dashboard" element={<AdminDashboard />} />
             <Route path="/admin_account_management" element={<AdminAccountManagement />} />
             <Route path="/admin_post_management" element={<AdminPostManagement />} />
+            <Route path="/admin_logs" element={<AdminLogs />} />
           </Route> 
         </Routes>  
       </BrowserRouter>

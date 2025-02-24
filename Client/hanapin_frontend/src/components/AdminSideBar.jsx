@@ -37,6 +37,9 @@ const AdminSideBar = ({ children }) => {
                   <ListItem button className={`sidebar-item ${isActive('/admin_post_management')}`} onClick={() => handleNavigation('/admin_post_management')}>
                      <ListItemText primary="Post Management" />
                   </ListItem>
+                  <ListItem button className={`sidebar-item ${isActive('/admin_logs')}`} onClick={() => handleNavigation('/admin_logs')}>
+                     <ListItemText primary="Logs" />
+                  </ListItem>
                </List>
             </Box>
          </Drawer>
