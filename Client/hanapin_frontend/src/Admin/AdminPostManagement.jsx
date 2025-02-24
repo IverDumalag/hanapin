@@ -20,10 +20,10 @@ const AdminPostManagement = () => {
 
    const fetchPosts = async () => {
       try {
-         const response = await axios.get('http://localhost/hanapin/Client/hanapin_backend/api/readUserPost.php');
+         const response = await axios.get(import.meta.env.VITE_API_READ_USER_POST);
          if (response.data.status === 200) {
             const postsWithUserDetails = await Promise.all(response.data.posts.map(async (post) => {
-               const userResponse = await axios.post('http://localhost/hanapin/Client/hanapin_backend/api/readUserByID.php', { user_id: post.user_id });
+               const userResponse = await axios.post(import.meta.env.VITE_API_READ_USER_BY_ID, { user_id: post.user_id });
                if (userResponse.data.status === 200) {
                   return { ...post, user_name: `${userResponse.data.user.first_name} ${userResponse.data.user.last_name}` };
                } else {
@@ -46,7 +46,7 @@ const AdminPostManagement = () => {
 
    const handleDeletePost = async () => {
       try {
-         const response = await axios.post('http://localhost/hanapin/Client/hanapin_backend/api/deletePost.php', { post_id: postToDelete });
+         const response = await axios.post(import.meta.env.VITE_API_DELETE_POST, { post_id: postToDelete });
          if (response.data.status === 200) {
             setPosts(posts.filter(post => post.post_id !== postToDelete));
             setDeleteModalOpen(false);

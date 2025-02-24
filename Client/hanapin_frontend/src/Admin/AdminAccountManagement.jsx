@@ -52,7 +52,7 @@ const AdminAccountManagement = () => {
 
    const fetchUsers = async () => {
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/readAllUser.php');
+         const response = await fetch(import.meta.env.VITE_API_READ_ALL_USER);
          const data = await response.json();
          if (data.status === 200) {
             return data.users;
@@ -68,7 +68,7 @@ const AdminAccountManagement = () => {
 
    const deleteUser = async (userId) => {
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/deleteUserAccount.php', {
+         const response = await fetch(import.meta.env.VITE_API_DELETE_USER_ACCOUNT, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ const AdminAccountManagement = () => {
 
    const createUser = async () => {
       try {
-         const response = await fetch('http://localhost/hanapin/Client/hanapin_backend/api/createUserAccount.php', {
+         const response = await fetch(import.meta.env.VITE_API_CREATE_USER_ACCOUNT, {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',

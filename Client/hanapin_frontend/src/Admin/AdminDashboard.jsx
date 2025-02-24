@@ -20,7 +20,7 @@ const AdminDashboard = () => {
 
    const fetchMissingFoundData = async () => {
       try {
-         const response = await axios.get('http://localhost/hanapin/Client/hanapin_backend/api/joinMissingFoundPerPlace.php');
+         const response = await axios.get(import.meta.env.VITE_API_JOIN_MISSING_FOUND_PER_PLACE);
          if (response.data.status === 200) {
             setMissingFoundData(response.data.results);
          } else {
@@ -33,7 +33,7 @@ const AdminDashboard = () => {
 
    const fetchUserContributions = async () => {
       try {
-         const response = await axios.get('http://localhost/hanapin/Client/hanapin_backend/api/joinUserContribution.php');
+         const response = await axios.get(import.meta.env.VITE_API_JOIN_USER_CONTRIBUTION);
          if (response.data.status === 200) {
             setUserContributions(response.data.contributions);
          } else {
@@ -46,7 +46,7 @@ const AdminDashboard = () => {
 
    const fetchSexDistribution = async () => {
       try {
-         const response = await axios.get('http://localhost/hanapin/Client/hanapin_backend/api/joinSexDistribution.php');
+         const response = await axios.get(import.meta.env.VITE_API_JOIN_SEX_DISTRIBUTION);
          if (response.data.status === 200) {
             setSexDistribution(response.data.distribution);
          } else {
@@ -59,7 +59,7 @@ const AdminDashboard = () => {
 
    const fetchMostEngagedPosts = async () => {
       try {
-         const response = await axios.get('http://localhost/hanapin/Client/hanapin_backend/api/joinMostEngagedPost.php');
+         const response = await axios.get(import.meta.env.VITE_API_JOIN_MOST_ENGAGED_POST);
          if (response.data.status === 200) {
             setMostEngagedPosts(response.data.posts);
          } else {
